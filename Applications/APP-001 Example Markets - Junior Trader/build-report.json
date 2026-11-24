@@ -1,0 +1,378 @@
+{
+  "builtAt": "2026-11-24T10:12:36.459Z",
+  "passed": true,
+  "errors": [],
+  "warnings": [],
+  "layerA": {
+    "invisibleRemoved": 0,
+    "spacesNormalised": 0
+  },
+  "bulletsRewrittenShare": 0.44,
+  "cv": {
+    "pdf": "Alex Morgan CV - Example Markets.pdf",
+    "docx": "Alex Morgan CV - Example Markets.docx",
+    "pages": 2
+  },
+  "letter": {
+    "pdf": "Alex Morgan Cover Letter - Example Markets.pdf",
+    "docx": "Alex Morgan Cover Letter - Example Markets.docx",
+    "pages": 1
+  },
+  "checks": {
+    "ats": {
+      "terms": [
+        {
+          "term": "equities",
+          "weight": 3,
+          "inJd": 3,
+          "before": "EXACT",
+          "after": "EXACT",
+          "Lb": 1,
+          "La": 1
+        },
+        {
+          "term": "futures",
+          "weight": 3,
+          "inJd": 3,
+          "before": "EXACT",
+          "after": "EXACT",
+          "Lb": 1,
+          "La": 1
+        },
+        {
+          "term": "options",
+          "weight": 3,
+          "inJd": 3,
+          "before": "EXACT",
+          "after": "EXACT",
+          "Lb": 1,
+          "La": 1
+        },
+        {
+          "term": "Excel",
+          "weight": 2,
+          "inJd": 2,
+          "before": "EXACT",
+          "after": "EXACT",
+          "Lb": 1,
+          "La": 1
+        },
+        {
+          "term": "market analysis",
+          "weight": 2,
+          "inJd": 2,
+          "before": "EXACT",
+          "after": "EXACT",
+          "Lb": 1,
+          "La": 1
+        },
+        {
+          "term": "P&L",
+          "weight": 2,
+          "inJd": 2,
+          "before": "EXACT",
+          "after": "EXACT",
+          "Lb": 1,
+          "La": 1
+        },
+        {
+          "term": "trade execution",
+          "weight": 2,
+          "inJd": 2,
+          "before": "EXACT",
+          "after": "VARIANT",
+          "Lb": 1,
+          "La": 0.95
+        },
+        {
+          "term": "attention to detail",
+          "weight": 1,
+          "inJd": 2,
+          "before": "EXACT",
+          "after": "EXACT",
+          "Lb": 1,
+          "La": 1
+        },
+        {
+          "term": "communication",
+          "weight": 1,
+          "inJd": 1,
+          "before": "EXACT",
+          "after": "EXACT",
+          "Lb": 1,
+          "La": 1
+        },
+        {
+          "term": "degree",
+          "weight": 1,
+          "inJd": 1,
+          "before": "VARIANT",
+          "after": "VARIANT",
+          "Lb": 0.95,
+          "La": 0.95
+        },
+        {
+          "term": "derivatives",
+          "weight": 1,
+          "inJd": 1,
+          "before": "MISSING",
+          "after": "MISSING",
+          "Lb": 0,
+          "La": 0
+        },
+        {
+          "term": "economics",
+          "weight": 1,
+          "inJd": 1,
+          "before": "EXACT",
+          "after": "EXACT",
+          "Lb": 1,
+          "La": 1
+        },
+        {
+          "term": "finance",
+          "weight": 1,
+          "inJd": 1,
+          "before": "EXACT",
+          "after": "EXACT",
+          "Lb": 1,
+          "La": 1
+        },
+        {
+          "term": "pricing",
+          "weight": 1,
+          "inJd": 1,
+          "before": "EXACT",
+          "after": "EXACT",
+          "Lb": 1,
+          "La": 1
+        },
+        {
+          "term": "Python",
+          "weight": 1,
+          "inJd": 1,
+          "before": "EXACT",
+          "after": "EXACT",
+          "Lb": 1,
+          "La": 1
+        },
+        {
+          "term": "risk limits",
+          "weight": 1,
+          "inJd": 1,
+          "before": "VARIANT",
+          "after": "VARIANT",
+          "Lb": 0.95,
+          "La": 0.95
+        },
+        {
+          "term": "risk management",
+          "weight": 1,
+          "inJd": 1,
+          "before": "EXACT",
+          "after": "EXACT",
+          "Lb": 1,
+          "La": 1
+        },
+        {
+          "term": "trader",
+          "weight": 1,
+          "inJd": 5,
+          "before": "VARIANT",
+          "after": "EXACT",
+          "Lb": 0.95,
+          "La": 1
+        }
+      ],
+      "atsBefore": 96,
+      "atsAfter": 96,
+      "missing": [
+        "derivatives"
+      ],
+      "dropped": []
+    },
+    "recruiter": {
+      "score": 86,
+      "verdict": "STRONG MATCH",
+      "cap": null,
+      "capped": false,
+      "gates": 1,
+      "gatesMet": 1,
+      "gatesPartial": 0,
+      "gatesMissing": 0,
+      "rows": [
+        {
+          "req": "Execute trades in equities, futures and options",
+          "weight": 5,
+          "gate": false,
+          "match": "EXACT",
+          "quality": "recent",
+          "evidence": "Northbridge Capital, p10",
+          "E": 1,
+          "Q": 1
+        },
+        {
+          "req": "Monitor daily P&L, margin and position limits",
+          "weight": 5,
+          "gate": false,
+          "match": "EXACT",
+          "quality": "recent",
+          "evidence": "Northbridge Capital, p12",
+          "E": 1,
+          "Q": 1
+        },
+        {
+          "req": "Prepare end-of-day risk summaries and trade reviews",
+          "weight": 4,
+          "gate": false,
+          "match": "EXACT",
+          "quality": "recent",
+          "evidence": "p11, p12",
+          "E": 1,
+          "Q": 1
+        },
+        {
+          "req": "Produce market notes on macro data, earnings and price action",
+          "weight": 3,
+          "gate": false,
+          "match": "EXACT",
+          "quality": "older",
+          "evidence": "Kestrel Capital, p16",
+          "E": 1,
+          "Q": 0.9
+        },
+        {
+          "req": "Degree in finance or economics",
+          "weight": 4,
+          "gate": true,
+          "match": "EXACT",
+          "quality": "academic",
+          "evidence": "MSc Finance, BSc Economics",
+          "E": 1,
+          "Q": 0.6
+        },
+        {
+          "req": "Strong Excel skills",
+          "weight": 4,
+          "gate": false,
+          "match": "STRONG",
+          "quality": "recent",
+          "evidence": "Excel journal, p11",
+          "E": 0.85,
+          "Q": 1
+        },
+        {
+          "req": "Basic Python",
+          "weight": 1,
+          "gate": false,
+          "match": "PARTIAL",
+          "quality": "skills",
+          "evidence": "Python (basic), skills list",
+          "E": 0.65,
+          "Q": 0.35
+        },
+        {
+          "req": "Clear written communication",
+          "weight": 3,
+          "gate": false,
+          "match": "STRONG",
+          "quality": "older",
+          "evidence": "Weekly sector notes, p16",
+          "E": 0.85,
+          "Q": 0.9
+        }
+      ]
+    },
+    "parse": {
+      "ok": true,
+      "checks": [
+        {
+          "check": "Text is machine-readable",
+          "ok": true
+        },
+        {
+          "check": "Name found",
+          "ok": true
+        },
+        {
+          "check": "Email found",
+          "ok": true
+        },
+        {
+          "check": "Phone found",
+          "ok": true
+        },
+        {
+          "check": "Dates are parseable",
+          "ok": true
+        },
+        {
+          "check": "Every employer found",
+          "ok": true
+        },
+        {
+          "check": "Standard headings, in order",
+          "ok": true
+        },
+        {
+          "check": "No broken characters",
+          "ok": true
+        }
+      ],
+      "chars": 2265
+    },
+    "writing": {
+      "ok": true,
+      "flags": [],
+      "letterSentences": 9,
+      "avgSentenceWords": 23
+    },
+    "firstPass": {
+      "score": 76,
+      "parts": {
+        "identity": 20,
+        "visibility": 17,
+        "credibility": 20,
+        "density": 11,
+        "risk": 8
+      }
+    }
+  },
+  "changes": [
+    {
+      "p": 5,
+      "section": "PROFILE",
+      "kind": "rewritten",
+      "before": "Trading analyst with experience across equities, futures and options, combining market analysis, trade execution and daily risk monitoring with structured, data-driven decision making.",
+      "after": "Junior trader profile with live and simulated execution across equities, futures and options, daily P&L, margin and position-limit monitoring, and end-of-day risk summaries for the desk. Writes short, decision-ready market notes on macro data, earnings and price action."
+    },
+    {
+      "p": 12,
+      "section": "WORK EXPERIENCE",
+      "kind": "rewritten",
+      "before": "Monitored daily P&L, margin and portfolio exposure, preparing end-of-day summaries that flagged limit breaches and open risks for the desk.",
+      "after": "Monitored daily P&L, margin, position limits and portfolio exposure by preparing end-of-day risk summaries that flagged limit breaches and open risks for the desk."
+    },
+    {
+      "p": 10,
+      "section": "WORK EXPERIENCE",
+      "kind": "rewritten",
+      "before": "Executed simulated and live trades across equities, futures and options by applying pre-trade risk checks, position limits and written trade plans before every order.",
+      "after": "Executed simulated and live trades in equities, futures and options by applying pre-trade risk checks, position limits and a written trade plan before every order."
+    },
+    {
+      "p": 16,
+      "section": "WORK EXPERIENCE",
+      "kind": "rewritten",
+      "before": "Produced weekly sector notes covering macro data, earnings and price action by turning raw market data into short, decision-ready summaries.",
+      "after": "Produced weekly market notes on macro data, earnings and price action by turning raw market data into short, decision-ready summaries for the team."
+    },
+    {
+      "p": 11,
+      "section": "WORK EXPERIENCE",
+      "kind": "rewritten",
+      "before": "Improved trade review quality by 25% by building an Excel journal that tracks entry rationale, slippage and outcome for every position.",
+      "after": "Improved trade review quality by 25% by building an Excel trade journal that records entry rationale, slippage and outcome for every position."
+    }
+  ]
+}

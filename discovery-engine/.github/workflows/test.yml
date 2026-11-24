@@ -1,0 +1,48 @@
+name: test
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npx playwright install chromium
+      - run: npm test
+      - run: npm run init:local
+        env:
+          JCC_ROOT: ${{ runner.temp }}\JCC
+      - run: npm run init:local
+        env:
+          JCC_ROOT: ${{ runner.temp }}\JCC
+      - run: npm run doctor
+        env:
+          JCC_ROOT: ${{ runner.temp }}\JCC
+      - name: Repository privacy gate
+        shell: pwsh
+        run: |
+          $tracked = @(git ls-files)
+          $bad = @($tracked | Where-Object {
+            $_ -match '(^|/)(JCC-Data|JCC-Knowledge|node_modules)(/|$)' -or
+            (($_ -match '(^|/)\.env($|\.)') -and ($_ -notmatch '(^|/)\.env\.example$')) -or
+            $_ -match '\.(sqlite|db|wal|shm|docx|pdf|zip)$'
+          })
+          if ($bad.Count -gt 0) {
+            $bad | ForEach-Object { Write-Host "Forbidden tracked private/runtime path: $_" }
+            throw 'Repository privacy gate failed: private/runtime artifacts are tracked.'
+          }
+          $secretHits = @(git grep -nI -E 'BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|github_pat_[A-Za-z0-9_]{20,}|ghp_[A-Za-z0-9]{20,}' -- . 2>$null)
+          $grepExit = $LASTEXITCODE
+          if ($grepExit -eq 0 -and $secretHits.Count -gt 0) {
+            $secretHits | ForEach-Object { Write-Host $_ }
+            throw 'Repository privacy gate failed: credential-like content found.'
+          }
+          if ($grepExit -gt 1) {
+            throw "Repository privacy gate failed: credential scan exited $grepExit."
+          }
+          Write-Host 'PRIVACY_AUDIT=PASS'
+          exit 0

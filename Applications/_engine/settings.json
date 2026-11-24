@@ -1,0 +1,7 @@
+{
+  "autopilot": false,
+  "applyMode": "manual",
+  "windowHours": 96,
+  "minVerdict": "STRETCH",
+  "tailorOnQueue": true
+}

@@ -1,0 +1,17 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>JCC Knowledge Graph</title><link rel="stylesheet" href="/knowledge-graph.css"></head>
+<body>
+<header class="kgHeader"><div><a class="back" href="/">← JCC LOCAL</a><h1>KNOWLEDGE GRAPH</h1><p>Live 3D view · derived from the canonical JCC-Knowledge vault</p></div><div class="kgActions"><button id="reset">RESET</button><button id="fit">FIT</button><button id="fullscreen">FULLSCREEN</button></div></header>
+<main class="kgLayout">
+  <aside class="kgSidebar">
+    <label class="searchLabel">Search<input id="search" placeholder="Job, skill, source, CV…" autocomplete="off"></label>
+    <div id="searchResults" class="searchResults"></div>
+    <h2>Clusters</h2><div id="filters" class="filters"></div>
+    <div class="stats"><span><b id="nodeCount">0</b> nodes</span><span><b id="linkCount">0</b> links</span></div>
+    <div id="liveStatus" class="live"><i></i><span>Connecting…</span></div>
+    <section id="detail" class="detail"><h2>Selection</h2><p>Click a node to inspect it. Operational nodes can open the corresponding JCC record.</p></section>
+  </aside>
+  <section id="graphShell" class="graphShell"><div id="graph"></div><div class="hint">Drag to rotate · wheel to zoom · right-drag to pan · click nodes to inspect</div></section>
+</main>
+<script src="/vendor/3d-force-graph.min.js"></script><script type="module" src="/knowledge-graph.js"></script>
+</body></html>

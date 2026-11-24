@@ -1,0 +1,41 @@
+{
+  "analysis": {
+    "priority": "High",
+    "summary": "Execution, risk monitoring and market-note evidence match the desk's daily work closely. Python is basic only, which the posting lists as a plus rather than a requirement.",
+    "gaps": ["Python is basic only (listed as a plus)"],
+    "openQuestions": ["Right to work in the UK", "Notice period", "Salary expectation in GBP"],
+    "requirements": [
+      { "req": "Execute trades in equities, futures and options", "weight": 5, "gate": false, "match": "EXACT", "quality": "recent", "evidence": "Northbridge Capital, p10" },
+      { "req": "Monitor daily P&L, margin and position limits", "weight": 5, "gate": false, "match": "EXACT", "quality": "recent", "evidence": "Northbridge Capital, p12" },
+      { "req": "Prepare end-of-day risk summaries and trade reviews", "weight": 4, "gate": false, "match": "EXACT", "quality": "recent", "evidence": "p11, p12" },
+      { "req": "Produce market notes on macro data, earnings and price action", "weight": 3, "gate": false, "match": "EXACT", "quality": "older", "evidence": "Kestrel Capital, p16" },
+      { "req": "Degree in finance or economics", "weight": 4, "gate": true, "match": "EXACT", "quality": "academic", "evidence": "MSc Finance, BSc Economics" },
+      { "req": "Strong Excel skills", "weight": 4, "gate": false, "match": "STRONG", "quality": "recent", "evidence": "Excel journal, p11" },
+      { "req": "Basic Python", "weight": 1, "gate": false, "match": "PARTIAL", "quality": "skills", "evidence": "Python (basic), skills list" },
+      { "req": "Clear written communication", "weight": 3, "gate": false, "match": "STRONG", "quality": "older", "evidence": "Weekly sector notes, p16" }
+    ]
+  },
+  "cv": {
+    "ops": [
+      { "op": "replace", "p": 5, "expect": "Trading analyst", "text": "Junior trader profile with live and simulated execution across equities, futures and options, daily P&L, margin and position-limit monitoring, and end-of-day risk summaries for the desk. Writes short, decision-ready market notes on macro data, earnings and price action." },
+      { "op": "replace", "p": 12, "expect": "Monitored daily", "text": "Monitored daily P&L, margin, position limits and portfolio exposure by preparing end-of-day risk summaries that flagged limit breaches and open risks for the desk." },
+      { "op": "replace", "p": 10, "expect": "Executed simulated", "text": "Executed simulated and live trades in equities, futures and options by applying pre-trade risk checks, position limits and a written trade plan before every order." },
+      { "op": "replace", "p": 16, "expect": "Produced weekly", "text": "Produced weekly market notes on macro data, earnings and price action by turning raw market data into short, decision-ready summaries for the team." },
+      { "op": "replace", "p": 11, "expect": "Improved trade review", "text": "Improved trade review quality by 25% by building an Excel trade journal that records entry rationale, slippage and outcome for every position." }
+    ]
+  },
+  "coverLetter": {
+    "date": "24 November 2026",
+    "recipient": ["Hiring Team", "Example Markets", "London"],
+    "subject": "Junior Trader application",
+    "greeting": "Dear Hiring Team,",
+    "paragraphs": [
+      "I would like to apply for the Junior Trader role on the equity derivatives desk at Example Markets. The role is close to the work I do now: executing trades across equities, futures and options, watching P&L and margin through the day, and writing up what happened for the desk.",
+      "At Northbridge Capital I execute simulated and live trades under written trade plans, with pre-trade risk checks and position limits applied before every order. I monitor daily P&L, margin and exposure, and my end-of-day summaries flag limit breaches and open risks so that senior traders can act on them quickly.",
+      "I also keep my own trade records honest. I built an Excel journal that records the rationale, slippage and outcome of every position, and using it raised the quality of my trade reviews by 25%. Before Northbridge, I wrote weekly sector notes at Kestrel Capital, turning macro data, earnings and price action into short summaries.",
+      "My programming is limited to Python (basic), and I would welcome the chance to build on it with the desk's tools. I hold an MSc in Finance and a BSc in Economics, and I would be glad to discuss how I could support your traders from the first week."
+    ],
+    "signoff": "Kind regards,"
+  },
+  "allowTerms": []
+}

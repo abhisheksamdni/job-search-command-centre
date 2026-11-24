@@ -1,0 +1,3 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import os from 'node:os';import path from 'node:path';import { DatabaseSync } from 'node:sqlite';import { migrate } from '../src/migrate.mjs';import { seed } from '../src/seed.mjs';
+
+test('migrations create required schema',()=>{const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'jcc-db-'));const db=new DatabaseSync(path.join(tmp,'x.sqlite'));db.exec('PRAGMA foreign_keys=ON');migrate(db);seed(db);const names=new Set(db.prepare("SELECT name FROM sqlite_master WHERE type='table'").all().map(x=>x.name));for(const n of ['jobs','applications','application_documents','cv_versions','cv_version_files','evidence_ledger','sources','source_recipes'])assert.ok(names.has(n),n);db.close();});

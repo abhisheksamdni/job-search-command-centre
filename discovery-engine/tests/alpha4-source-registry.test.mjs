@@ -1,0 +1,7 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {DatabaseSync} from 'node:sqlite';import {migrate} from '../src/migrate.mjs';import {onboardSource,canonicalSourceKey} from '../src/services/sourceOnboarding.mjs';import {detectPublicAts} from '../adapters/publicAts.mjs';
+function db(){const d=new DatabaseSync(':memory:');d.exec('PRAGMA foreign_keys=ON');migrate(d);return d}
+test('SmartRecruiters public ATS is detected',()=>assert.equal(detectPublicAts('https://jobs.smartrecruiters.com/Acme')?.adapter,'smartrecruiters'));
+test('Recruitee public ATS is detected',()=>assert.equal(detectPublicAts('https://acme.recruitee.com/o/trader')?.adapter,'recruitee'));
+test('source canonical key is stable',()=>assert.equal(canonicalSourceKey('https://jobs.smartrecruiters.com/Acme'),canonicalSourceKey('https://jobs.smartrecruiters.com/Acme/')));
+test('re-onboarding same source deduplicates by canonical key',()=>{const d=db();const a=onboardSource(d,{name:'Acme',baseUrl:'https://jobs.smartrecruiters.com/Acme'});const b=onboardSource(d,{name:'Acme Careers',baseUrl:'https://jobs.smartrecruiters.com/Acme'});assert.equal(a.sourceId,b.sourceId)});
+test('user ownership is not downgraded by auto discovery',()=>{const d=db();const a=onboardSource(d,{name:'A',baseUrl:'https://jobs.smartrecruiters.com/A',ownership:'USER_ADDED'});onboardSource(d,{name:'A auto',baseUrl:'https://jobs.smartrecruiters.com/A',ownership:'AUTO_DISCOVERED'});assert.equal(d.prepare('select ownership from sources where id=?').get(a.sourceId).ownership,'USER_ADDED')});

@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Job Command Centre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%230b1530'/><path d='M18 40l10-10 7 7 11-14' stroke='%2334d399' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f3f5f9;--card:#fff;--card-2:#f7f9fc;--input:#fff;
+  --ink:#0f1a33;--ink-2:#26324d;--muted:#5d6782;--faint:#9aa3b8;
+  --line:#e4e8f0;--line-2:#d5dbe6;--hover:rgb(15 26 51/.04);--sel:rgb(15 26 51/.07);--track:#edf0f5;
+  --side:#0b1530;--side-ink:#dfe6f5;--side-muted:#8592b0;--side-hover:rgb(255 255 255/.06);--side-sel:rgb(255 255 255/.11);
+  --pri:#13233f;--pri-ink:#fff;--acc:#0e9f78;--acc-2:#34d399;--acc-soft:#e3f6ef;--acc-ink:#086b51;
+  --blue:#2f5bea;--blue-soft:#e8eefe;--warn:#8a5a00;--warn-soft:#fff3d6;--bad:#b4232c;--bad-soft:#fde8e9;
+  --s-queued:#94a3b8;--s-tailoring:#7c8cf0;--s-draft:#a5a9b5;--s-ready:#0e9f78;--s-sent:#2f5bea;--s-screening:#0891b2;--s-interview:#7c3aed;--s-offer:#d97706;--s-accepted:#16a34a;--s-rejected:#dc2626;--s-declined:#6b7280;--s-withdrawn:#8b8f99;
+  --shadow:0 1px 2px rgb(15 26 51/.05),0 4px 16px rgb(15 26 51/.05);--shadow-pop:0 18px 50px rgb(15 26 51/.22);
+  --head:'Plus Jakarta Sans','Inter',system-ui,sans-serif;--sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;
+  --bg:#0a0f1d;--card:#111a2d;--card-2:#0e1627;--input:#0c1424;--ink:#e8edf8;--ink-2:#c9d2e6;--muted:#94a0bb;--faint:#5f6b86;
+  --line:#1d2840;--line-2:#28354f;--hover:rgb(255 255 255/.04);--sel:rgb(255 255 255/.08);--track:#18223a;
+  --side:#060b17;--pri:#e8edf8;--pri-ink:#0a0f1d;--acc:#34d399;--acc-soft:rgb(52 211 153/.12);--acc-ink:#6ee7b7;
+  --blue:#7b9bff;--blue-soft:rgb(123 155 255/.13);--warn:#fbbf24;--warn-soft:rgb(251 191 36/.12);--bad:#f87171;--bad-soft:rgb(248 113 113/.12);
+  --shadow:0 1px 2px rgb(0 0 0/.3);--shadow-pop:0 18px 50px rgb(0 0 0/.6);}}
+:root[data-theme="dark"]{color-scheme:dark;
+  --bg:#0a0f1d;--card:#111a2d;--card-2:#0e1627;--input:#0c1424;--ink:#e8edf8;--ink-2:#c9d2e6;--muted:#94a0bb;--faint:#5f6b86;
+  --line:#1d2840;--line-2:#28354f;--hover:rgb(255 255 255/.04);--sel:rgb(255 255 255/.08);--track:#18223a;
+  --side:#060b17;--pri:#e8edf8;--pri-ink:#0a0f1d;--acc:#34d399;--acc-soft:rgb(52 211 153/.12);--acc-ink:#6ee7b7;
+  --blue:#7b9bff;--blue-soft:rgb(123 155 255/.13);--warn:#fbbf24;--warn-soft:rgb(251 191 36/.12);--bad:#f87171;--bad-soft:rgb(248 113 113/.12);
+  --shadow:0 1px 2px rgb(0 0 0/.3);--shadow-pop:0 18px 50px rgb(0 0 0/.6);}
+
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font:14px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}button,input,select,textarea{font:inherit;color:inherit}
+.app{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:100vh}
+
+/* Sidebar */
+.side{background:var(--side);color:var(--side-ink);position:sticky;top:0;height:100vh;padding:20px 12px;display:flex;flex-direction:column;gap:14px;overflow:auto}
+.brand{display:flex;align-items:center;gap:10px;padding:2px 8px 8px}
+.mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#13233f,#1d3a6b);display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgb(255 255 255/.08)}
+.brand b{display:block;font:700 15px/1.2 var(--head);color:#fff}.brand span{font-size:11.5px;color:var(--side-muted)}
+.navsec{font-size:10.5px;letter-spacing:.1em;color:var(--side-muted);padding:10px 10px 4px;font-weight:600}
+.nav a{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:8px;text-decoration:none;font-size:13.5px;color:var(--side-ink)}
+.nav a:hover{background:var(--side-hover)}.nav a.on{background:var(--side-sel);color:#fff;font-weight:500}
+.nav .ic{width:18px;text-align:center;opacity:.75}
+.nav .ct{margin-left:auto;font-size:11.5px;color:var(--side-muted);font-variant-numeric:tabular-nums}
+.nav .ct.hot{background:var(--acc-2);color:#052e22;border-radius:999px;padding:0 7px;font-weight:600}
+.sidefoot{margin-top:auto;border-top:1px solid rgb(255 255 255/.08);padding:12px 8px 0;display:flex;flex-direction:column;gap:7px;font-size:12px;color:var(--side-muted)}
+.sidefoot b{color:var(--side-ink);font-weight:500}
+
+/* Main */
+.main{min-width:0;display:flex;flex-direction:column}
+.top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:10px;padding:12px 28px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.crumb{font:700 15px var(--head);margin:0}
+.search{flex:1;max-width:380px;margin-left:auto;display:flex;align-items:center;gap:8px;background:var(--input);border:1px solid var(--line-2);border-radius:10px;padding:6px 10px}
+.search input{border:0;outline:0;background:transparent;width:100%}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line-2);background:var(--card);border-radius:9px;padding:7px 13px;font-size:13.5px;font-weight:500;cursor:pointer;text-decoration:none;white-space:nowrap;color:var(--ink)}
+.btn:hover{background:var(--card-2)}.btn:disabled{opacity:.5;cursor:default}
+.btn.pri{background:var(--pri);color:var(--pri-ink);border-color:transparent}.btn.pri:hover{opacity:.92}
+.btn.acc{background:var(--acc);color:#fff;border-color:transparent}.btn.acc:hover{filter:brightness(1.05)}
+.btn.sm{padding:4px 10px;font-size:12.5px;border-radius:8px}.btn.ghost{background:transparent;border-color:transparent}.btn.ghost:hover{background:var(--hover)}
+.iconbtn{border:0;background:transparent;border-radius:9px;width:34px;height:34px;cursor:pointer;color:var(--muted)}.iconbtn:hover{background:var(--hover);color:var(--ink)}
+.view{padding:26px 32px 72px;max-width:1480px;width:100%}
+.hello{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px}
+.hello h2{font:800 30px/1.15 var(--head);letter-spacing:-.02em;margin:0 0 6px}
+.hello p{margin:0;font-size:14.5px;color:var(--muted);max-width:760px}
+.sechead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:30px 0 12px}
+.sechead h3{font:700 17px var(--head);margin:0}.sechead .sub{font-size:13px;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+.pad{padding:20px 22px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:16px;align-items:start}
+.ttl{font:700 14.5px var(--head);margin:0}.muted{color:var(--muted)}.small{font-size:12.5px}.mono{font-variant-numeric:tabular-nums}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none;background:var(--faint)}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;border-radius:999px;padding:3px 9px;background:var(--track);color:var(--ink-2);white-space:nowrap}
+.chip.acc{background:var(--acc-soft);color:var(--acc-ink)}.chip.warn{background:var(--warn-soft);color:var(--warn)}.chip.bad{background:var(--bad-soft);color:var(--bad)}.chip.blue{background:var(--blue-soft);color:var(--blue)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.note{border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.5}
+.note.warn{background:var(--warn-soft);color:var(--warn)}.note.bad{background:var(--bad-soft);color:var(--bad)}.note.ok{background:var(--acc-soft);color:var(--acc-ink)}.note.info{background:var(--blue-soft);color:var(--blue)}
+.empty{padding:28px;text-align:center;color:var(--muted);font-size:14px}
+
+/* Flow strip */
+.flow{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin-top:22px;overflow:hidden}
+.step{padding:14px 16px;border-right:1px solid var(--line);text-decoration:none;display:block;position:relative}
+.step:last-child{border-right:0}.step:hover{background:var(--card-2)}
+.step .n{font:800 24px/1 var(--head);font-variant-numeric:tabular-nums}
+.step .l{font-size:12.5px;font-weight:600;margin-top:6px}.step .h{font-size:11.5px;color:var(--muted)}
+.step .who{position:absolute;top:10px;right:12px;font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--faint)}
+.step.you .who{color:var(--blue)}
+/* Autopilot */
+.ap{display:flex;flex-wrap:wrap;gap:16px;align-items:center;padding:16px 20px;margin-top:16px}
+.ap .st{display:flex;gap:12px;align-items:center;min-width:260px;flex:1}
+.pulse{width:10px;height:10px;border-radius:50%;background:var(--faint)}
+.pulse.on{background:var(--acc);box-shadow:0 0 0 0 rgb(14 159 120/.5);animation:pulse 1.6s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 10px rgb(14 159 120/0)}100%{box-shadow:0 0 0 0 rgb(14 159 120/0)}}
+.switch{position:relative;width:38px;height:22px;border-radius:999px;background:var(--line-2);border:0;cursor:pointer;flex:none}
+.switch::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .15s;box-shadow:0 1px 2px rgb(0 0 0/.2)}
+.switch.on{background:var(--acc)}.switch.on::after{left:19px}
+pre.log{background:var(--card-2);border:1px solid var(--line);border-radius:10px;padding:12px;font:12px/1.5 ui-monospace,Consolas,monospace;white-space:pre-wrap;max-height:320px;overflow:auto;margin:0}
+
+/* Dossier-inspired cards */
+.funnel{display:flex;flex-direction:column;gap:9px;margin-top:16px}
+.frow{display:grid;grid-template-columns:92px 1fr 64px;align-items:center;gap:12px}
+.ftrack{height:24px;background:var(--track);border-radius:7px;overflow:hidden}.fbar{height:100%;border-radius:7px;min-width:3px}
+.figs{display:flex;gap:26px}.figs div{display:flex;flex-direction:column-reverse}.figs dd{margin:0;font:800 26px/1 var(--head)}.figs dt{font-size:12px;color:var(--muted)}
+.bars{display:flex;align-items:flex-end;gap:6px;height:140px;margin-top:18px;padding-bottom:22px}
+.bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px;position:relative}
+.bar i{display:block;width:100%;max-width:24px;background:var(--blue);border-radius:6px 6px 2px 2px;min-height:2px}
+.bar span{position:absolute;bottom:-20px;font-size:10.5px;color:var(--muted);white-space:nowrap}.bar b{font-size:11px;color:var(--muted)}
+.stack{display:flex;height:10px;gap:2px;border-radius:6px;overflow:hidden;background:var(--track);margin:14px 0}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:2px 18px;list-style:none;margin:0;padding:0}
+.legend li{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:13.5px}.legend li .n{margin-left:auto}.legend li.zero{color:var(--faint)}
+.wl{list-style:none;margin:8px 0 0;padding:0}.wl li{border-top:1px solid var(--line)}
+.wl button{all:unset;box-sizing:border-box;width:100%;display:flex;gap:12px;align-items:flex-start;padding:11px 6px;border-radius:8px;cursor:pointer}
+.wl button:hover{background:var(--hover)}.wl .t{font-size:14px;font-weight:500}.wl .r{font-size:12.5px;color:var(--muted)}.wl .a{margin-left:auto;flex:none;font-size:12.5px;color:var(--blue);font-weight:500}
+
+/* Ready cards */
+.ready{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,400px),1fr));gap:16px}
+.rc{padding:18px 20px;display:flex;flex-direction:column;gap:12px;border-top:3px solid var(--line)}
+.rc.v-strong{border-top-color:var(--acc)}.rc.v-good{border-top-color:var(--blue)}.rc.v-stretch{border-top-color:var(--s-offer)}.rc.v-weak{border-top-color:var(--s-rejected)}
+.rc h4{margin:0;font:700 17px/1.3 var(--head)}.rc .co{font-size:13px;color:var(--muted)}
+.scores{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.sc{background:var(--card-2);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.sc b{display:block;font:800 19px/1.15 var(--head)}.sc span{font-size:11px;color:var(--muted)}.sc b.txt{font:600 12.5px/1.35 var(--sans)}
+.gaps{margin:0;padding-left:18px;font-size:12.5px;color:var(--muted)}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
+
+/* Tables & filters */
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.seg{display:inline-flex;background:var(--track);border-radius:9px;padding:2px}
+.seg button{border:0;background:transparent;padding:5px 11px;border-radius:7px;font-size:12.5px;cursor:pointer;color:var(--muted);font-weight:500}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+select.f,input.f,textarea.f{border:1px solid var(--line-2);background:var(--input);border-radius:9px;padding:7px 10px;font-size:13px;outline:0}
+input.f:focus,textarea.f:focus,select.f:focus{border-color:var(--blue)}
+table{width:100%;border-collapse:collapse}
+.card:has(> table){overflow-x:auto}
+/* Tables fit the window: action buttons wrap instead of forcing a sideways scroll. */
+td[style*="nowrap"]{white-space:normal!important;min-width:120px}
+td[style*="nowrap"] .btn{margin:2px 0 2px 4px}
+td .role{min-width:140px}
+@media (max-width:1000px){.c-opt{display:none}}
+.clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-width:200px}
+@media (max-width:1100px){th,td{padding:9px 10px}}
+th{text-align:left;font-size:11.5px;font-weight:600;letter-spacing:.03em;color:var(--muted);padding:10px 14px;border-bottom:1px solid var(--line);text-transform:uppercase}
+td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:13.5px}
+tr:last-child td{border-bottom:0}tbody tr:hover{background:var(--hover)}td .role{font-weight:600}
+
+/* Board */
+.board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(220px,1fr);gap:12px;overflow-x:auto;padding-bottom:10px}
+.col{background:var(--card-2);border:1px solid var(--line);border-radius:14px;padding:10px;min-height:360px;display:flex;flex-direction:column;gap:8px}
+.col.over{outline:2px dashed var(--blue);outline-offset:-3px}
+.colh{display:flex;align-items:center;gap:8px;padding:4px 6px 6px;font-size:12.5px;font-weight:700;letter-spacing:.02em}.colh .n{margin-left:auto;color:var(--muted);font-weight:500}
+.bc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:grab;font-size:13px;box-shadow:var(--shadow)}
+.bc:hover{border-color:var(--line-2)}.bc .t{font-weight:600}.bc .m{color:var(--muted);font-size:12px;margin-top:3px}.bc.dragging{opacity:.4}
+
+/* Calendar */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal .dh{font-size:11px;color:var(--muted);text-align:center;padding:4px 0;font-weight:600}
+.cal .d{min-height:84px;border:1px solid var(--line);border-radius:10px;padding:6px;font-size:12px;background:var(--card)}
+.cal .d.out{opacity:.4}.cal .d.today{border-color:var(--blue);box-shadow:inset 0 0 0 1px var(--blue)}
+.cal .ev{display:block;margin-top:3px;border-radius:5px;padding:1px 5px;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.ev.interview{background:var(--blue-soft);color:var(--blue)}.ev.followup{background:var(--warn-soft);color:var(--warn)}
+
+
+/* Drawer */
+.scrim{position:fixed;inset:0;background:rgb(6 11 23/.35);opacity:0;pointer-events:none;transition:opacity .2s;z-index:20}.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(980px,100vw);background:var(--bg);box-shadow:var(--shadow-pop);z-index:21;transform:translateX(105%);transition:transform .25s ease;display:flex;flex-direction:column}
+.drawer.on{transform:none}
+.dh{padding:18px 24px 12px;background:var(--card);border-bottom:1px solid var(--line)}
+.dh h3{font:800 22px/1.2 var(--head);margin:4px 0 4px}
+.tabs{display:flex;gap:2px;padding:0 18px;background:var(--card);border-bottom:1px solid var(--line)}
+.tabs button{border:0;background:transparent;padding:10px 12px;cursor:pointer;font-size:13.5px;color:var(--muted);border-bottom:2px solid transparent;font-weight:500}
+.tabs button.on{color:var(--ink);border-color:var(--acc)}
+.db{padding:18px 24px;overflow:auto;flex:1}
+.docs{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:16px;height:100%}
+.doc{width:100%;height:calc(100vh - 250px);border:1px solid var(--line);border-radius:12px;background:var(--card-2)}
+.refine{display:flex;flex-direction:column;gap:10px}
+.msg{border-radius:10px;padding:8px 10px;font-size:12.5px;line-height:1.45}.msg.me{background:var(--blue-soft);color:var(--ink)}.msg.ai{background:var(--card);border:1px solid var(--line)}
+.tl{list-style:none;margin:0;padding:0}.tl li{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13.5px;align-items:center}
+textarea.notes{width:100%;min-height:220px}
+.match td{font-size:13px}.m-EXACT,.m-STRONG{color:var(--acc-ink)}.m-PARTIAL,.m-ADJACENT{color:var(--warn)}.m-NONE{color:var(--bad)}
+.modal{position:fixed;inset:0;display:grid;place-items:center;z-index:30;background:rgb(6 11 23/.4)}
+.modal .card{padding:22px 24px;width:min(560px,calc(100vw - 32px));display:flex;flex-direction:column;gap:12px;max-height:90vh;overflow:auto}
+.modal label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;font-weight:600}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--pri);color:var(--pri-ink);padding:10px 16px;border-radius:12px;font-size:13.5px;z-index:40;box-shadow:var(--shadow-pop);max-width:90vw}
+.mobile-nav{display:none}
+#livebar .lb{display:flex;align-items:center;gap:10px;padding:9px 28px;background:var(--blue-soft);color:var(--blue);font-size:13px;border-bottom:1px solid var(--line)}
+@media (max-width:900px){.app{grid-template-columns:1fr}.side{position:fixed;z-index:25;width:250px;transform:translateX(-100%);transition:transform .2s}.side.on{transform:none}
+  .mobile-nav{display:inline-block}.view{padding:18px 16px 60px}.top{padding:10px 16px}.search{display:none}.flow{grid-template-columns:repeat(3,1fr)}.scores{grid-template-columns:repeat(2,1fr)}.docs{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side" id="side">
+    <div class="brand"><div class="mark"><svg width="20" height="20" viewBox="0 0 64 64"><path d="M12 42l12-12 8 8 18-20" stroke="#34d399" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><b>Command Centre</b><span>Job search</span></div></div>
+    <nav class="nav" id="nav"></nav>
+    <div class="sidefoot" id="sidefoot"></div>
+  </aside>
+  <div class="main">
+    <header class="top">
+      <button class="iconbtn mobile-nav" id="navbtn" aria-label="Menu">☰</button>
+      <h1 class="crumb" id="crumb">Today</h1>
+      <label class="search"><span class="muted">⌕</span><input id="q" placeholder="Search roles, companies, locations"></label>
+      <span id="modeslot"></span>
+      <button class="btn" id="addjob">+ Add job</button>
+      <button class="btn pri" id="runap">⌕ Search</button>
+      <button class="iconbtn" id="theme" aria-label="Toggle light or dark theme" title="Light / dark">◐</button>
+    </header>
+    <div id="livebar"></div>
+    <main class="view" id="view"><div class="empty">Loading…</div></main>
+  </div>
+</div>
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Application"></aside>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const LABEL={queued:'Queued',tailoring:'Tailoring',draft:'Needs attention',ready:'Ready to apply',sent:'Sent',screening:'Screening',interview:'Interview',offer:'Offer',accepted:'Accepted',rejected:'Rejected',declined:'Declined',withdrawn:'Withdrawn'};
+const CLOSED=['accepted','rejected','declined','withdrawn'],PIPE=['queued','tailoring','draft'];
+const RANK={'STRONG MATCH':0,'GOOD MATCH':1,'STRETCH':2,'WEAK MATCH':3,'DO NOT APPLY':4};
+const S={data:null,route:'today',age:'96h',loc:'all',show:'open',q:'',drawer:null,tab:'overview',doc:null,cal:new Date(),gtypes:null};
+const store={get(k,d){try{return localStorage.getItem(k)??d}catch{return d}},set(k,v){try{localStorage.setItem(k,v)}catch{}}};
+const dot=s=>`<span class="dot" style="background:var(--s-${s})"></span>`;
+const utc=d=>typeof d==='string'&&/^\d{4}-\d\d-\d\d \d\d:\d\d(:\d\d)?$/.test(d)?d.replace(' ','T')+'Z':d;
+const ago=d=>{d=utc(d);if(!d)return '—';const h=(Date.now()-new Date(d))/36e5;if(h<0)return 'in '+Math.round(-h)+'h';if(h<1)return 'just now';if(h<24)return `${Math.round(h)}h ago`;const dd=Math.round(h/24);return dd<14?`${dd}d ago`:new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short'})};
+const fmt=d=>d?new Date(utc(d)).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):'—';
+const when=d=>d?new Date(utc(d)).toLocaleString('en-GB',{weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'—';
+const plural=(n,a,b)=>`${n} ${n===1?a:b}`;
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.append(t);setTimeout(()=>t.remove(),3200)}
+async function api(path,body,method){const r=await fetch(path,body!==undefined||method?{method:method||'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body||{})}:{});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||`HTTP ${r.status}`);return j}
+async function load(quiet=false){S.data=await api('/api/state');render(quiet)}
+
+const apps=()=>S.data.apps;
+const byStatus=s=>apps().filter(a=>[].concat(s).includes(a.status)).sort((x,y)=>(RANK[x.verdict]??5)-(RANK[y.verdict]??5)||x.id.localeCompare(y.id));
+const match=a=>!S.q||JSON.stringify([a.company,a.role,a.location,a.title]).toLowerCase().includes(S.q);
+const fresh=j=>Date.now()-new Date(utc(j.posted||j.seen))<=(S.data.discovery.windowHours||96)*36e5;
+// newCount = found in the window and not yet screened (shrinks as screening works through them).
+const newCount=()=>S.data.discovery.available?S.data.discovery.jobs.filter(j=>fresh(j)&&!j.appId&&!j.screen).length:0;
+const foundCount=()=>S.data.discovery.available?S.data.discovery.jobs.filter(fresh).length:0;
+const screenedOut=()=>S.data.discovery.available?S.data.discovery.jobs.filter(j=>fresh(j)&&j.screen).length:0;
+const dueFollowUps=()=>apps().flatMap(a=>(a.followUps||[]).filter(f=>!f.done).map(f=>({...f,app:a}))).sort((x,y)=>new Date(x.due)-new Date(y.due));
+
+/* ---------- nav ---------- */
+const NAV=[['WORK',[['today','◐','Today'],['ready','✓','Ready to apply',()=>byStatus('ready').length,true],['pipeline','⟳','Tailoring',()=>byStatus(PIPE).length],['discover','✦','Discover',()=>newCount()]]],
+ ['TRACK',[['board','▦','Board'],['calendar','▣','Calendar'],['followups','↗','Follow-ups',()=>S.data.figures.followUpsDue,true],['interviews','◈','Interviews',()=>S.data.figures.interviews],['closed','□','Closed',()=>byStatus(CLOSED).length]]],
+ ['SYSTEM',[['autopilot','⚡','Automation'],['sources','⌁','Sources & search'],['insights','◔','Insights'],['profile','◉','Profile & CV']]]];
+const TITLES={matches:'Matches',strong:'Strong matches',good:'Good matches',today:'Today',ready:'Ready to apply',pipeline:'Tailoring',discover:'Discover',board:'Board',calendar:'Calendar',followups:'Follow-ups',interviews:'Interviews',closed:'Closed',autopilot:'Automation',sources:'Sources & search',insights:'Insights',profile:'Profile & CV'};
+function renderLive(){const A=S.data.autopilot,el=$('#livebar');if(!el)return;el.innerHTML=A.running?`<div class="lb"><span class="pulse on"></span><b>${esc(({discovery:'Searching job boards',indeed:'Searching Indeed',screening:'Screening new roles',tailoring:'Tailoring',applying:'Applying',replies:'Checking replies'})[A.phase]||'Working')}</b><span>${esc(A.detail||'')}</span><span style="margin-left:auto" class="small">Tailoring one role takes about 2–5 minutes</span></div>`:'';}
+function renderNav(){renderLive();const ms=$('#modeslot');if(ms){ms.innerHTML=modeSwitch();bindControls(ms);}$('#nav').innerHTML=NAV.map(([sec,items])=>`<div class="navsec">${sec}</div>`+items.map(([id,ic,l,count,hot])=>{const n=count?count():null;return `<a href="#${id}" class="${S.route===id?'on':''}"><span class="ic">${ic}</span>${l}${n!==null?`<span class="ct ${hot&&n?'hot':''}">${n}</span>`:''}</a>`}).join('')).join('');
+  const A=S.data.autopilot,J=S.data.jcc;
+  $('#sidefoot').innerHTML=`<div>${dot(A.running?'ready':'draft')} Automation <b>${A.running?esc(A.phase):'idle'}</b></div><div>${dot(J.running?'ready':'draft')} Search engine <b>${J.running?'ready':'starts on Search'}</b></div><div>Submission stays <b>manual</b></div>`;
+  $('#runap').textContent=A.running?'Working…':'⌕ Search';$('#runap').disabled=A.running}
+
+// quiet = background refresh: leave an open document preview alone so it doesn't reload.
+function render(quiet=false){if(S.route==='strong')S.vfilter='STRONG MATCH';else if(S.route==='good')S.vfilter='GOOD MATCH';renderNav();$('#crumb').textContent=TITLES[S.route]||'Today';
+  const V={matches:vDiscover,strong:vDiscover,good:vDiscover,ready:vReady,pipeline:vPipeline,discover:vDiscover,board:vBoard,calendar:vCalendar,followups:vFollowups,interviews:vInterviews,closed:vClosed,autopilot:vAutopilot,sources:vSources,insights:vInsights,profile:vProfile};
+  $('#view').innerHTML=(V[S.route]||vToday)();bind();if(S.route==='insights')loadInsights();if(S.drawer&&!(quiet&&S.tab==='docs'))drawer(S.drawer)}
+
+/* ---------- Today ---------- */
+function greeting(){const h=new Date().getHours();return h<12?'Good morning':h<18?'Good afternoon':'Good evening'}
+function vToday(){const F=S.data.figures,ready=byStatus('ready');
+  const line=ready.length?`${plural(ready.length,'package is','packages are')} ready. Open the posting, apply, then mark it sent: follow-ups schedule themselves.`:'Nothing ready right now. Click Search: it finds new roles, screens them and tailors the good ones.';
+  return `<section class="hello"><div><h2>${greeting()}${S.data.profile?.firstName?', '+esc(S.data.profile.firstName):''}</h2><p>${esc(line)}</p></div></section>
+  ${flowStrip()}${apCard(true)}
+  ${ready.length?`<div class="sechead"><h3>Ready to apply</h3><a class="sub" href="#ready">See all ${ready.length}</a></div><div class="ready">${ready.slice(0,3).map(readyCard).join('')}</div>`:''}
+  <div class="sechead"><h3>Progress</h3><span class="sub">How far each application you've sent has got</span></div>
+  <div class="grid">${cFunnel()}${cWorth()}${cActivity()}${cStanding()}</div>`}
+function flowStrip(){const D=S.data.discovery,F=S.data.figures;const steps=[
+  ['discover','Discovered',foundCount(),`last ${Math.round((S.data.discovery.windowHours||96)/24)} days · ${newCount()} to screen, ${screenedOut()} ruled out`,'AUTO'],['pipeline','Screened & queued',byStatus(['queued']).length,'waiting for tailoring','AUTO'],
+  ['pipeline','Tailoring',byStatus(['tailoring']).length,'CV + letter being built','AUTO'],['ready','Ready to apply',byStatus('ready').length,'passed every check','AUTO'],
+  ['board','Applied',F.sent,'submitted by you','YOU'],['followups','Follow-ups due',F.followUpsDue,'7 / 14 / 30 days','AUTO']];
+  return `<div class="card flow">${steps.map(([h,l,n,hint,who])=>`<a class="step ${who==='YOU'?'you':''}" href="#${h}"><span class="who">${who}</span><div class="n">${n}</div><div class="l">${l}</div><div class="h">${hint}</div></a>`).join('')}</div>`}
+function apCard(compact){const A=S.data.autopilot,s=A.settings,lr=A.lastRun;
+  const auth=A.claudeAuth==='expired'||/signed out/i.test(A.lastError||'');
+  return `<div class="card ap"><div class="st"><span class="pulse ${A.running?'on':''}"></span><div><div class="ttl">${A.running?'Working: '+esc(A.phase):'Automation is ready'}</div><div class="small muted">${A.running?esc(A.detail||A.phase):'Click Search to run the chain: search → screen → tailor → check replies. Nothing runs on its own.'}${lr&&!A.running?` Last run ${ago(lr.at)}: ${lr.ok?`${plural((lr.newlyReady||[]).length,'new package','new packages')} ready`:'failed'}.`:''}</div></div></div>
+  <button class="btn pri sm" data-runap ${A.running?'disabled':''}>⌕ Search</button>
+  ${compact?`<a class="btn sm" href="#autopilot">Details</a>`:''}</div>
+  ${auth?`<div class="note bad" style="margin-top:10px"><b>Claude Code is signed out, so tailoring can't run.</b> Open a terminal and run <code>claude</code>, then type <code>/login</code> and sign in. The next run picks up the queue automatically.</div>`:A.lastError&&!A.running?`<div class="note warn" style="margin-top:10px">${esc(A.lastError)}</div>`:''}`}
+function cFunnel(){const F=S.data.figures,max=Math.max(1,...F.funnel.map(f=>f.count));
+  return `<section class="card pad"><div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:baseline"><p class="ttl">Funnel</p><dl class="figs"><div><dt>sent</dt><dd class="mono">${F.sent}</dd></div><div><dt>heard back</dt><dd class="mono">${F.heardBackPercent===null?'—':F.heardBackPercent+'%'}</dd></div><div><dt>interviews</dt><dd class="mono">${F.reachedInterview}</dd></div></dl></div>
+  <div class="funnel">${F.funnel.map(f=>`<div class="frow"><span class="small">${LABEL[f.stage]}</span><div class="ftrack"><div class="fbar" style="width:${f.count/max*100}%;background:var(--s-${f.stage})"></div></div><span class="small muted mono">${f.count}${f.conversion!==null?` · ${f.conversion}%`:''}</span></div>`).join('')}</div></section>`}
+function cActivity(){const W=S.data.figures.weeks,max=Math.max(1,...W.map(w=>w.sent));
+  return `<section class="card pad"><p class="ttl">Week by week</p><p class="small muted" style="margin:2px 0 0">Applications sent, last 12 weeks</p><div class="bars">${W.map((w,i)=>`<div class="bar" title="${w.sent} sent, week of ${fmt(w.start)}">${w.sent?`<b>${w.sent}</b>`:''}<i style="height:${w.sent/max*100}%;${w.sent?'':'opacity:.25'}"></i>${i%3===2||i===11?`<span>${new Date(w.start).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span>`:''}</div>`).join('')}</div></section>`}
+function cStanding(){const B=S.data.figures.byStatus,keys=Object.keys(LABEL),tot=keys.reduce((n,k)=>n+B[k],0);
+  return `<section class="card pad"><div style="display:flex;justify-content:space-between;align-items:baseline"><p class="ttl">Where things stand</p><a class="small muted" href="#board">Open board</a></div><div class="stack">${tot?keys.filter(k=>B[k]).map(k=>`<span style="flex:${B[k]};background:var(--s-${k})"></span>`).join(''):''}</div>
+  <ul class="legend">${keys.map(k=>`<li class="${B[k]?'':'zero'}">${dot(k)}<span>${LABEL[k]}</span><span class="n mono">${B[k]}</span></li>`).join('')}</ul></section>`}
+function cWorth(){const A=S.data.figures.attention;
+  return `<section class="card pad"><div style="display:flex;justify-content:space-between;align-items:baseline"><p class="ttl">Worth a look</p><span class="small muted">${A.length?plural(A.length,'thing','things'):''}</span></div>
+  ${A.length?`<ul class="wl">${A.slice(0,7).map(x=>`<li><button data-open="${x.id}">${dot(x.status)}<span style="flex:1;min-width:0"><div class="t">${esc(x.label)}${x.soon?' <span class="chip warn">Soon</span>':''}</div><div class="r">${esc(x.reason)}</div></span><span class="a">${esc(x.action)} →</span></button></li>`).join('')}</ul>`:'<p class="small muted" style="border-top:1px solid var(--line);padding-top:14px">All caught up.</p>'}</section>`}
+
+/* ---------- Ready / pipeline ---------- */
+const vclass=v=>/STRONG/.test(v||'')?'strong':/GOOD/.test(v||'')?'good':/STRETCH/.test(v||'')?'stretch':v?'weak':'';
+function verdictChip(v){if(!v)return '<span class="chip">Not analysed</span>';const c={strong:'acc',good:'blue',stretch:'warn',weak:'bad'}[vclass(v)];return `<span class="chip ${c}">${esc(v)}</span>`}
+function scoreBlock(a){const s=a.scores||{};return `<div class="scores"><div class="sc"><b class="mono">${s.recruiter??'—'}</b><span title="Computed from the requirement table (56-point §37-44)">Recruiter evidence</span></div><div class="sc"><b class="mono">${s.atsBefore??'—'}→${s.atsAfter??'—'}</b><span>ATS before → after</span></div><div class="sc"><b class="mono">${s.firstPass??'—'}</b><span>First-pass signal</span></div><div class="sc"><b class="txt">${esc(s.hardGates||'—')}</b><span>Hard gates</span></div></div>`}
+const openQs=a=>(a.openQuestions||[]).length?`<div class="note warn"><b>You answer before submitting:</b> ${a.openQuestions.map(esc).join(' · ')}</div>`:'';
+function readyCard(a){return `<article class="card rc v-${vclass(a.verdict)}"><div class="chips">${verdictChip(a.verdict)}${a.priority?`<span class="chip">${esc(a.priority)} priority</span>`:''}${a.postedAt?`<span class="chip">Posted ${ago(a.postedAt)}</span>`:''}${a.tailoredAt?`<span class="chip blue" title="Last tailored and checked">Tailored ${when(a.tailoredAt)}</span>`:''}</div>
+  <div><h4>${esc(a.role)}</h4><div class="co">${esc(a.company)} · ${esc(a.location||'')}</div></div>${scoreBlock(a)}
+  ${a.summary?`<p class="small" style="margin:0">${esc(a.summary)}</p>`:''}${(a.gaps||[]).length?`<ul class="gaps">${a.gaps.map(g=>`<li>${esc(g)}</li>`).join('')}</ul>`:''}${openQs(a)}
+  ${applyBlock(a)}<div class="actions">${a.url?`<a class="btn pri" href="${esc(a.url)}" target="_blank" rel="noopener">Open posting ↗</a>`:''}${canAuto(a)?`<button class="btn acc" data-apply="${a.id}">Auto-apply</button><button class="btn sm ghost" data-apply="${a.id}" data-dry title="Fill the form without submitting">Dry run</button>`:''}<button class="btn" data-open="${a.id}" data-tab="docs">CV & letter</button><button class="btn" data-open="${a.id}" data-tab="match">Match</button><button class="btn acc" data-sent="${a.id}">Mark as sent</button><button class="btn sm ghost" data-delapp="${a.id}" title="Delete this application">Delete</button></div></article>`}
+const countryOf=l=>/london|united kingdom|england|\buk\b|\bgb\b/i.test(l||'')?'United Kingdom':/netherlands|amsterdam/i.test(l||'')?'Netherlands':/switzerland|geneva|zurich/i.test(l||'')?'Switzerland':/dubai|abu dhabi|emirates/i.test(l||'')?'UAE':/ireland|dublin/i.test(l||'')?'Ireland':/poland|warsaw/i.test(l||'')?'Poland':/norway|oslo/i.test(l||'')?'Norway':/, ma\b|boston|united states/i.test(l||'')?'United States':'Other';
+function vReady(){
+  const all=byStatus('ready').filter(match),v=S.rv||'all',loc=S.rloc||'all',sort=S.rsort||'best',view=S.rview||'cards';
+  const cnt=k=>k==='all'?all.length:all.filter(a=>a.verdict===k).length;
+  let r=all.filter(a=>v==='all'||a.verdict===v).filter(a=>loc==='all'||countryOf(a.location)===loc).filter(a=>!S.rauto||canAuto(a));
+  const t=d=>+new Date(utc(d)||0);
+  r=r.sort(sort==='score'?(a,b)=>(b.scores?.recruiter??0)-(a.scores?.recruiter??0):sort==='posted'?(a,b)=>t(b.postedAt||b.foundAt)-t(a.postedAt||a.foundAt):sort==='tailored'?(a,b)=>t(b.tailoredAt)-t(a.tailoredAt):(a,b)=>(RANK[a.verdict]??5)-(RANK[b.verdict]??5)||(b.scores?.recruiter??0)-(a.scores?.recruiter??0));
+  const countries=[...new Set(all.map(a=>countryOf(a.location)))].sort();
+  const vt=[['all','All'],['STRONG MATCH','Strong'],['GOOD MATCH','Good'],['STRETCH','Stretch'],['WEAK MATCH','Weak']];
+  const list=`<div class="card"><table><thead><tr><th>Role</th><th>Location</th><th>Verdict</th><th>Recruiter</th><th>ATS</th><th class="c-opt">Posted</th><th></th></tr></thead><tbody>${r.map(a=>`<tr data-open="${a.id}" style="cursor:pointer"><td><div class="role">${esc(a.role)}</div><div class="small muted">${esc(a.company)} · ${esc(a.id)}</div></td><td class="small">${esc(a.location||'')}</td><td>${verdictChip(a.verdict)}</td><td class="mono"><b>${a.scores?.recruiter??'—'}</b></td><td class="mono small">${a.scores?.atsBefore??'—'}→<b>${a.scores?.atsAfter??'—'}</b></td><td class="small muted mono c-opt">${ago(a.postedAt||a.foundAt)}</td><td style="text-align:right;white-space:nowrap">${a.url?`<a class="btn sm ghost" href="${esc(a.url)}" target="_blank" rel="noopener">Posting ↗</a>`:''}${canAuto(a)?`<button class="btn sm acc" data-apply="${a.id}">Auto-apply</button>`:''}<button class="btn sm acc" data-sent="${a.id}">Sent</button></td></tr>`).join('')}</tbody></table></div>`;
+  return `<section class="hello"><div><h2>Ready to apply</h2><p>Every package is tailored from your master CV, fact-checked and laid out like your original. Apply on the posting, attach the files, then mark it sent.</p></div></section><div style="height:16px"></div>
+  <div class="filters"><div class="seg">${vt.map(([k,l])=>`<button data-rv="${k}" class="${v===k?'on':''}">${l} · ${cnt(k)}</button>`).join('')}</div>
+   <select class="f" id="rloc"><option value="all">All locations</option>${countries.map(c=>`<option ${loc===c?'selected':''}>${c}</option>`).join('')}</select>
+   <select class="f" id="rsort">${[['best','Best match first'],['score','Recruiter score'],['posted','Newest posting'],['tailored','Recently tailored']].map(([k,l])=>`<option value="${k}" ${sort===k?'selected':''}>${l}</option>`).join('')}</select>
+   <label class="small muted" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="rauto" ${S.rauto?'checked':''}> Auto-apply possible</label>
+   <div class="seg" style="margin-left:auto"><button data-rview="cards" class="${view==='cards'?'on':''}">Cards</button><button data-rview="list" class="${view==='list'?'on':''}">List</button></div>
+   <span class="small muted">${plural(r.length,'package','packages')}</span></div>
+  ${r.length?(view==='list'?list:`<div class="ready">${r.map(readyCard).join('')}</div>`):'<div class="card empty">No packages match these filters.</div>'}`}
+function bindReady(){
+  const keep=(k,v)=>{S[k]=v;store.set(k,String(v));render()};
+  $$('[data-rv]').forEach(b=>b.onclick=()=>keep('rv',b.dataset.rv));$$('[data-rview]').forEach(b=>b.onclick=()=>keep('rview',b.dataset.rview));
+  const l=$('#rloc');if(l)l.onchange=()=>keep('rloc',l.value);const s=$('#rsort');if(s)s.onchange=()=>keep('rsort',s.value);
+  const a=$('#rauto');if(a)a.onchange=()=>{S.rauto=a.checked;store.set('rauto',a.checked?'1':'');render()};
+}
+function appRow(a){return `<tr data-open="${a.id}" style="cursor:pointer"><td>${dot(a.status)}</td><td><div class="role">${esc(a.role)}</div><div class="small muted">${esc(a.company)} · ${esc(a.location||'')}</div></td><td>${LABEL[a.status]}${a.status==='tailoring'?' <span class="pulse on" style="display:inline-block;width:7px;height:7px;margin-left:4px"></span>':''}</td><td>${verdictChip(a.verdict)}</td><td class="small muted">${a.build?(a.build.passed?'Passed':`Failed: ${a.build.errors} issue(s)`):'—'}</td><td class="small muted">${ago((a.history||[]).at(-1)?.at)}</td></tr>`}
+function vPipeline(){const r=byStatus(PIPE).filter(match);return `<section class="hello"><div><h2>Tailoring</h2><p>Roles the autopilot (or you) queued. Each one gets the 56-point analysis, a tailored CV and cover letter, and the build checks. Passing packages move to Ready to apply on their own.</p></div><button class="btn pri" data-tailornow ${S.data.autopilot.running?'disabled':''}>Tailor now</button></section><div style="height:20px"></div><div class="card">${r.length?`<table><thead><tr><th></th><th>Role</th><th>Status</th><th>Verdict</th><th>Build</th><th>Updated</th></tr></thead><tbody>${r.map(appRow).join('')}</tbody></table>`:'<div class="empty">Nothing waiting. Queue a role from Discover, or add one with “+ Add job”.</div>'}</div>`}
+
+/* ---------- Discover ---------- */
+function jobsFiltered(){const D=S.data.discovery;if(!D.available)return[];const lim={'96h':96,'7d':168,'14d':336,all:1e9}[S.age]*36e5;
+  return D.jobs.filter(j=>Date.now()-new Date(utc(j.posted||j.seen))<=lim).filter(j=>S.loc==='all'||(j.location||'').toLowerCase().includes(S.loc)).filter(j=>S.show==='all'||(S.show==='open'?!j.appId&&!j.screen:S.show==='screened'?j.screen:j.appId)).filter(match)}
+function jobState(j){if(j.appId){const a=apps().find(x=>x.id===j.appId),v=a?.verdict||a?.screenVerdict;return `${v?`<span class="chip ${VCHIP[v]||''}">${esc(v)}</span> `:''}<button class="btn sm" data-open="${j.appId}">${j.appId}</button>`;}const lbl=esc(`${j.company}, ${j.title}`);if(j.screen)return `<span class="chip ${j.screen.verdict==='DO NOT APPLY'?'bad':'warn'}" title="${esc(j.screen.reason)}">${esc(j.screen.verdict)}</span> <button class="btn sm" data-anyway="${j.id}" data-label="${lbl}">Tailor anyway</button><button class="btn sm ghost" data-delrole="${j.id}" data-label="${lbl}" title="Remove this role for good">✕</button>`;return `<button class="btn sm acc" data-queue="${j.id}">Queue</button><button class="btn sm ghost" data-delrole="${j.id}" data-label="${lbl}" title="Remove this role for good">✕</button>`}
+function discoverRows(){
+  const D=S.data.discovery,rows=[],seen=new Set();
+  const lim={'96h':96,'7d':168,'14d':336,all:1e9}[S.age]*36e5,inWin=d=>!d||Date.now()-new Date(utc(d))<=lim;
+  for(const a of apps()){if(CLOSED.includes(a.status)&&S.show!=='all')continue;if(a.jccJobId)seen.add(a.jccJobId);
+    rows.push({key:a.jccJobId?String(a.jccJobId):a.externalKey||a.id,role:a.role,company:a.company,location:a.location,posted:a.postedAt||a.foundAt,source:a.source,url:a.url,verdict:a.verdict||a.screenVerdict||null,
+      reason:a.summary&&!/^Waiting/.test(a.summary)?a.summary:(a.screenReason||''),scores:a.scores||{},stage:LABEL[a.status],status:a.status,appId:a.id});}
+  for(const j of (D.available?D.jobs:[]))if(!seen.has(j.id))rows.push({key:String(j.id),role:j.title,company:j.company,location:j.location,posted:j.posted||j.seen,source:j.source||'LinkedIn',url:j.url,
+    verdict:j.screen?.verdict||null,reason:j.screen?.reason||'',scores:{},stage:j.screen?'Ruled out':'Not screened yet',status:j.screen?'ruledout':'new'});
+  for(const x of S.data.screenedExternal||[])rows.push({key:x.key,role:x.title||'',company:x.company||'',location:'',posted:x.at,source:x.source||'Indeed',url:'',verdict:x.verdict,reason:x.reason,scores:{},stage:'Ruled out',status:'ruledout'});
+  return rows.filter(r=>inWin(r.posted)||r.appId).filter(r=>S.loc==='all'||(r.location||'').toLowerCase().includes(S.loc)).filter(match);
+}
+function vDiscover(){const D=S.data.discovery;const all=discoverRows(),f=S.vfilter||'all';
+  const cnt=v=>v==='all'?all.length:v==='none'?all.filter(r=>!r.verdict).length:all.filter(r=>r.verdict===v).length;
+  const ds=S.dsort||'best',t=r=>+new Date(utc(r.posted)||0);
+  const rows=(f==='all'?all:f==='none'?all.filter(r=>!r.verdict):all.filter(r=>r.verdict===f)).sort(ds==='newest'?(a,b)=>t(b)-t(a):ds==='oldest'?(a,b)=>t(a)-t(b):(a,b)=>(RANK[a.verdict]??(a.verdict?5:4.5))-(RANK[b.verdict]??(b.verdict?5:4.5))||t(b)-t(a));
+  const locs=['all','london','united kingdom','netherlands','switzerland','poland','norway','dubai','abu dhabi','ireland','boston'];
+  const tabs=[['all','All'],['STRONG MATCH','Strong'],['GOOD MATCH','Good'],['STRETCH','Stretch'],['WEAK MATCH','Weak'],['DO NOT APPLY','Do not apply'],['none','Not screened yet']];
+  const sc=r=>r.scores&&r.scores.recruiter!=null?`<div class="mono" title="Recruiter evidence score (56-point)"><b>${r.scores.recruiter}</b></div>`:'<span class="muted small">—</span>';
+  const ats=r=>r.scores&&r.scores.atsAfter!=null?`<div class="mono small" title="ATS keyword coverage: your master CV → the tailored CV">${r.scores.atsBefore}→<b>${r.scores.atsAfter}</b></div>`:'<span class="muted small">—</span>';
+  const act=r=>{const lbl=esc(`${r.company}, ${r.role}`),view=r.url?`<a class="btn sm ghost" href="${esc(r.url)}" target="_blank" rel="noopener">View ↗</a>`:'';
+    if(r.appId)return `${view}<button class="btn sm" data-open="${r.appId}">${r.appId}</button>`;
+    if(r.status==='ruledout')return `${view}<button class="btn sm" data-anyway="${esc(r.key)}" data-label="${lbl}">Tailor anyway</button><button class="btn sm ghost" data-delrole="${esc(r.key)}" data-label="${lbl}" title="Remove for good">✕</button>`;
+    return `${view}<button class="btn sm acc" data-queue="${esc(r.key)}">Queue</button><button class="btn sm ghost" data-delrole="${esc(r.key)}" data-label="${lbl}" title="Remove for good">✕</button>`;};
+  return `<section class="hello"><div><h2>Discover</h2><p>Every role found, with its 56-point verdict and scores. Strong, good and stretch roles are tailored automatically; ruled-out roles show why, and you can still tailor them anyway or remove them.</p></div></section><div style="height:16px"></div>
+  <div class="filters"><div class="seg">${tabs.map(([k,l])=>`<button data-vf="${k}" class="${f===k?'on':''}">${l} · ${cnt(k)}</button>`).join('')}</div></div>
+  <div class="filters"><div class="seg">${['96h','7d','14d','all'].map(a=>`<button data-age="${a}" class="${S.age===a?'on':''}">${a==='all'?'Any time':a}</button>`).join('')}</div>
+  <select class="f" id="loc">${locs.map(l=>`<option value="${l}" ${S.loc===l?'selected':''}>${l==='all'?'All locations':l.replace(/\b\w/g,c=>c.toUpperCase())}</option>`).join('')}</select><select class="f" id="dsort">${[['best','Best match first'],['newest','Newest posted first'],['oldest','Oldest posted first']].map(([k,l])=>`<option value="${k}" ${ds===k?'selected':''}>${l}</option>`).join('')}</select><span class="small muted" style="margin-left:auto">${plural(rows.length,'role','roles')}</span></div>
+  <div class="card">${rows.length?`<table><thead><tr><th>Role</th><th>Location</th><th class="c-opt" data-dsort style="cursor:pointer;white-space:nowrap" title="Sort by posting date">Posted ${ds==='newest'?'↓':ds==='oldest'?'↑':'↕'}</th><th>Verdict</th><th title="Recruiter evidence">Recruiter</th><th title="ATS keywords: master → tailored">ATS</th><th class="c-opt">Stage</th><th></th></tr></thead><tbody>${rows.map(r=>`<tr${r.appId?` data-open="${r.appId}" style="cursor:pointer"`:''}><td><div class="role">${esc(r.role)}</div><div class="small muted">${esc(r.company)} · ${esc(r.source||'')}</div>${r.reason?`<div class="small muted clamp2" title="${esc(r.reason)}">${esc(r.reason)}</div>`:''}</td><td class="small">${esc(r.location||'')}</td><td class="small muted mono c-opt">${ago(r.posted)}</td><td>${r.verdict?`<span class="chip ${VCHIP[r.verdict]||''}">${esc(r.verdict)}</span>`:'<span class="small muted">Not yet</span>'}</td><td>${sc(r)}</td><td>${ats(r)}</td><td class="small c-opt">${r.appId?`${dot(r.status)} `:''}${esc(r.stage)}</td><td style="text-align:right;white-space:nowrap">${act(r)}</td></tr>`).join('')}</tbody></table>`:'<div class="empty">No roles match these filters.</div>'}</div>`}
+
+const COLS=['queued','tailoring','ready','sent','screening','interview','offer','closed'];
+function vBoard(){return `<section class="hello"><div><h2>Board</h2><p>Every application from queue to offer. Drag a card to move it; moving it to Sent stamps the date and schedules follow-ups.</p></div></section><div style="height:18px"></div><div class="board">${COLS.map(c=>{const list=(c==='closed'?byStatus(CLOSED):c==='tailoring'?byStatus(['tailoring','draft']):byStatus(c)).filter(match);return `<div class="col" data-col="${c}"><div class="colh">${dot(c==='closed'?'declined':c)}${c==='closed'?'Closed':c==='tailoring'?'Tailoring':LABEL[c]}<span class="n">${list.length}</span></div>${list.map(a=>`<div class="bc" draggable="true" data-card="${a.id}" data-open="${a.id}"><div class="t">${esc(a.company)}</div><div>${esc(a.role)}</div><div class="m">${a.status==='draft'?'Needs attention · ':''}${CLOSED.includes(a.status)?LABEL[a.status]+' · ':''}${a.sentAt?'Sent '+ago(a.sentAt):a.verdict?esc(a.verdict):esc(a.id)}</div></div>`).join('')}</div>`}).join('')}</div>`}
+function vCalendar(){const E=S.data.figures.events,m=new Date(S.cal.getFullYear(),S.cal.getMonth(),1),start=new Date(m);start.setDate(1-((m.getDay()+6)%7));const today=new Date().toDateString();
+  const days=[...Array(42)].map((_,i)=>{const d=new Date(start);d.setDate(start.getDate()+i);return d});
+  const upcoming=E.filter(e=>+new Date(e.at)>=Date.now()-864e5).sort((a,b)=>new Date(a.at)-new Date(b.at)).slice(0,10);
+  return `<section class="hello"><div><h2>Calendar</h2><p>Interviews and follow-up dates in one place.</p></div><div style="display:flex;gap:6px;align-items:center"><button class="btn sm" data-cal="-1">‹</button><b style="min-width:130px;text-align:center">${m.toLocaleDateString('en-GB',{month:'long',year:'numeric'})}</b><button class="btn sm" data-cal="1">›</button></div></section><div style="height:18px"></div>
+  <div class="grid" style="grid-template-columns:minmax(0,3fr) minmax(260px,1fr)"><div class="card pad"><div class="cal">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>`<div class="dh">${d}</div>`).join('')}${days.map(d=>`<div class="d ${d.getMonth()!==m.getMonth()?'out':''} ${d.toDateString()===today?'today':''}"><span class="mono">${d.getDate()}</span>${E.filter(e=>new Date(e.at).toDateString()===d.toDateString()).map(e=>`<span class="ev ${e.kind}" data-open="${e.id}" title="${esc(e.label)}">${esc(e.label)}</span>`).join('')}</div>`).join('')}</div></div>
+  <div class="card pad"><p class="ttl">Coming up</p>${upcoming.length?`<ul class="tl" style="margin-top:8px">${upcoming.map(e=>`<li data-open="${e.id}" style="cursor:pointer"><span class="ev ${e.kind}" style="margin:0">${e.kind==='interview'?'Interview':'Follow-up'}</span><span style="flex:1">${esc(e.label.split(': ').pop())}</span><span class="small muted">${fmt(e.at)}</span></li>`).join('')}</ul>`:'<p class="small muted">Nothing scheduled yet. Follow-ups appear once you mark applications sent.</p>'}</div></div>`}
+function followText(f){const a=f.app,first=f.n===1;return `Subject: ${a.role} application${first?'':' – checking in'}\n\nDear Hiring Team,\n\n${first?`I applied for the ${a.role} role at ${a.company} on ${fmt(a.sentAt)} and wanted to check whether there is any news on the timeline. I am still keen on the role and happy to share anything else that would help.`:`I am following up on my application for the ${a.role} role, sent on ${fmt(a.sentAt)}. If the position is still open I would welcome the chance to talk; if it has been filled, a short note would be appreciated.`}\n\nKind regards,\n${[S.data.profile?.firstName,S.data.profile?.lastName].filter(Boolean).join(' ')}\n${[S.data.profile?.phone,S.data.profile?.email].filter(Boolean).join(' · ')}`}
+function vFollowups(){const L=dueFollowUps().filter(f=>match(f.app)),now=Date.now();
+  return `<section class="hello"><div><h2>Follow-ups</h2><p>Scheduled automatically when you mark an application sent: a nudge at 7 days, another at 14, and a prompt to close it at 30. A reply moves the card to Screening and cancels the rest.</p></div></section><div style="height:18px"></div>
+  ${L.length?L.map((f,i)=>`<div class="card pad" style="margin-bottom:12px"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><b>${esc(f.app.company)}, ${esc(f.app.role)}</b><span class="chip ${+new Date(f.due)<=now?'warn':''}">${esc(f.kind)} · ${+new Date(f.due)<=now?'due '+ago(f.due):'on '+fmt(f.due)}</span><span style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">${f.n<3?`<button class="btn sm" data-copy="${i}">Copy email</button>`:''}<button class="btn sm" data-fdone="${f.app.id}:${f.n}">Done</button><button class="btn sm acc" data-status="${f.app.id}:screening">They replied</button><button class="btn sm ghost" data-status="${f.app.id}:rejected">Rejected</button></span></div>${f.n<3?`<pre class="small muted" style="white-space:pre-wrap;font:inherit;margin:12px 0 0">${esc(followText(f))}</pre>`:'<p class="small muted" style="margin:10px 0 0">No reply after 30 days. Close it, or keep it open if you have reason to wait.</p>'}</div>`).join(''):'<div class="card empty">No follow-ups yet. They appear here once you mark an application sent.</div>'}`}
+function vInterviews(){const L=apps().flatMap(a=>(a.interviews||[]).map(i=>({...i,app:a}))).sort((x,y)=>new Date(x.at)-new Date(y.at));
+  return `<section class="hello"><div><h2>Interviews</h2><p>Add one from an application's Timeline tab. Ask Claude for a mock interview against the role the day before.</p></div></section><div style="height:18px"></div><div class="card">${L.length?`<table><thead><tr><th>When</th><th>Application</th><th>Stage</th><th>Notes</th></tr></thead><tbody>${L.map(i=>`<tr data-open="${i.app.id}" style="cursor:pointer"><td class="mono">${when(i.at)}</td><td><b>${esc(i.app.company)}</b><div class="small muted">${esc(i.app.role)}</div></td><td>${esc(i.stage)}</td><td class="small muted">${esc(i.notes)}</td></tr>`).join('')}</tbody></table>`:'<div class="empty">No interviews yet.</div>'}</div>`}
+function vClosed(){const r=byStatus(CLOSED).filter(match);return `<section class="hello"><div><h2>Closed</h2><p>The exact CV and letter you sent stay in each folder's submitted copy.</p></div></section><div style="height:18px"></div><div class="card">${r.length?`<table><thead><tr><th></th><th>Role</th><th>Status</th><th>Verdict</th><th>Build</th><th>Updated</th></tr></thead><tbody>${r.map(appRow).join('')}</tbody></table>`:'<div class="empty">Nothing closed yet.</div>'}</div>`}
+
+/* ---------- Autopilot / sources / profile ---------- */
+function vAutopilot(){const A=S.data.autopilot,s=A.settings;
+  return `<section class="hello"><div><h2>Automation</h2><p>Runs only when you click Search (or Queue on one role). One click: JCC searches your sources, Claude screens every new role with the 56-point rules, queues and tailors the good ones, then checks Gmail for replies and drafts due follow-ups. It never submits an application or sends an email.</p></div></section>${apCard(false)}
+  <div class="grid" style="margin-top:16px"><section class="card pad"><p class="ttl">Settings</p><div style="display:grid;gap:12px;margin-top:12px">
+   <label class="small" style="display:flex;justify-content:space-between;align-items:center;gap:10px">Queue roles rated at least <select class="f" data-set="minVerdict">${['STRONG MATCH','GOOD MATCH','STRETCH'].map(v=>`<option ${s.minVerdict===v?'selected':''}>${v}</option>`).join('')}</select></label>
+   <label class="small" style="display:flex;justify-content:space-between;align-items:center;gap:10px">Screen roles posted within <select class="f" data-set="windowHours">${[[96,'4 days'],[168,'7 days'],[336,'14 days']].map(([h,l])=>`<option value="${h}" ${s.windowHours==h?'selected':''}>${l}</option>`).join('')}</select></label>
+   <label class="small" style="display:flex;justify-content:space-between;align-items:center;gap:10px">Tailor as soon as I press Queue <button class="switch ${s.tailorOnQueue?'on':''}" data-settoggle="tailorOnQueue"></button></label></div></section>
+  <section class="card pad"><p class="ttl">What runs automatically, and what's yours</p><ul class="tl" style="margin-top:8px"><li>${dot('ready')}Search all sources</li><li>${dot('ready')}Screen new roles (knockouts, 56-point verdict)</li><li>${dot('ready')}Tailor CV + cover letter, fact-check, format</li><li>${dot('ready')}Read replies in Gmail, move cards, draft follow-ups (never sent)</li><li>${dot('ready')}Schedule follow-ups once sent</li><li>${dot('sent')}<b>You:</b> submit on the employer's site, answer visa / salary / notice questions, click Mark as sent</li></ul></section></div>
+  <div class="sechead"><h3>Run log</h3><span class="sub">_engine/autopilot.log</span></div><pre class="log">${esc(A.logTail||'No runs yet.')}</pre>`}
+function vSources(){const D=S.data.discovery,J=S.data.jcc;
+  return `<section class="hello"><div><h2>Sources & search</h2><p>Where JCC looks and what it looks for. New sources, roles and locations are used from the next search.</p></div><div style="display:flex;gap:8px"><button class="btn pri" data-runap ${S.data.autopilot.running?'disabled':''}>⌕ Search</button></div></section><div style="height:18px"></div>
+  <div class="grid"><section class="card pad"><p class="ttl">Sources</p><ul class="tl" style="margin-top:8px">${(D.sources||[]).map(s=>`<li>${dot(s.health==='HEALTHY'?'ready':s.health==='MANUAL_ONLY'?'offer':s.health==='UNTESTED'?'queued':'rejected')}<span style="flex:1"><b>${esc(s.name)}</b><div class="small muted">${esc(s.health)}${s.last_error?' · '+esc(String(s.last_error).split('|')[0].slice(0,90)):''}</div></span><span class="small muted mono">${s.jobs_found||0} seen</span></li>`).join('')}</ul>
+   <form id="f-source" style="display:grid;gap:8px;margin-top:14px"><b class="small">Add a job portal or careers page</b><input class="f" name="name" placeholder="Name, e.g. Trafigura careers or a job board" required><input class="f" name="baseUrl" placeholder="https://… careers page or job board" required><button class="btn">Add source</button><span class="small muted">Company career sites on Greenhouse, Lever, Ashby, Workday, SmartRecruiters and similar are read automatically. Sites that block robots (e.g. eFinancialCareers) need “+ Add job”.</span></form></section>
+  <section class="card pad"><p class="ttl">Target roles</p><div class="chips" style="margin-top:10px">${(D.roles||[]).map(r=>`<span class="chip ${r.enabled?'':'bad'}" title="${esc(r.family)}">${esc(r.phrase)}</span>`).join('')}</div>
+   <form id="f-role" style="display:flex;gap:8px;margin-top:12px"><input class="f" name="phrase" placeholder="e.g. commodities analyst" style="flex:1" required><button class="btn">Add</button></form>
+   <p class="ttl" style="margin-top:20px">Target locations</p><div class="chips" style="margin-top:10px">${(D.locations||[]).map(l=>`<span class="chip">${esc([l.city,l.country].filter(Boolean).join(', '))}</span>`).join('')}</div>
+   <form id="f-loc" style="display:flex;gap:8px;margin-top:12px"><input class="f" name="city" placeholder="City (optional)" style="flex:1"><input class="f" name="country" placeholder="Country" style="flex:1" required><button class="btn">Add</button></form></section>
+  <section class="card pad"><p class="ttl">Last search</p><ul class="tl" style="margin-top:8px"><li><span class="muted" style="width:90px">Status</span>${esc(D.lastRun?.status||'—')}</li><li><span class="muted" style="width:90px">Started</span>${D.lastRun?ago(D.lastRun.started_at):'—'}</li><li><span class="muted" style="width:90px">Engine</span>JCC ${J.running?'ready':'starts when you click Search'}</li></ul><p class="small muted" style="margin-top:12px">Found a role somewhere JCC can't read? Use <b>+ Add job</b> at the top: paste the description and it's tailored like any other.</p></section></div>`}
+function vProfile(){const P=S.data.profile||{};const F=[['firstName','First name',''],['lastName','Last name',''],['email','Email',''],['phone','Phone',''],['city','City you are based in',''],['authorisedUK','Authorised to work in the UK? (Yes / No)',''],['sponsorshipUK','Need visa sponsorship for the UK? (Yes / No)',''],['authorisedOther','Authorised to work in other countries applied to? (Yes / No)',''],['sponsorshipOther','Need sponsorship in those countries? (Yes / No)',''],['heardAbout','How did you hear about us (default answer)','e.g. LinkedIn'],['rightToWork','Right to work (UK and elsewhere)','e.g. UK: needs Skilled Worker sponsorship'],['visa','Current visa / status',''],['noticePeriod','Notice period / availability',''],['availableFrom','Available from',''],['salaryUK','Salary expectation, UK (GBP)',''],['salaryEU','Salary expectation, Europe (EUR)',''],['salaryUAE','Salary expectation, UAE (AED)',''],['relocation','Relocation','e.g. Open to London, Netherlands, Switzerland, Dubai'],['linkedin','LinkedIn URL','']];
+  return `<section class="hello"><div><h2>Profile & CV</h2><p>Your master CV is the only source every tailored CV is cut from. Your answers below are never written into CVs or letters; they're shown on each package so you can copy them into application forms.</p></div></section><div style="height:18px"></div>
+  <div class="grid" style="grid-template-columns:minmax(0,1.3fr) minmax(300px,1fr)"><section class="card pad"><div style="display:flex;justify-content:space-between;align-items:center"><p class="ttl">Master CV</p><span class="small muted">_engine/master/Master CV.docx</span></div><iframe class="doc" style="margin-top:10px;height:70vh" src="/api/master/cv.pdf"></iframe></section>
+  <section class="card pad"><p class="ttl">Answers for application forms</p><form id="f-profile" style="display:grid;gap:10px;margin-top:12px">${F.map(([k,l,ph])=>`<label class="small" style="display:flex;flex-direction:column;gap:4px;font-weight:600">${l}<input class="f" name="${k}" value="${esc(P[k]||'')}" placeholder="${esc(ph)}"></label>`).join('')}<button class="btn pri">Save answers</button>${P.updatedAt?`<span class="small muted">Saved ${ago(P.updatedAt)}</span>`:''}</form></section></div>`}
+
+/* ---------- Insights: what recruiters ask for vs what your CV proves ---------- */
+let INS=null;
+const HAVE={yes:['acc','You have it'],partial:['warn','Limited'],no:['bad','Gap']};
+function vInsights(){return `<section class="hello"><div><h2>Insights</h2><p>What the roles JCC found in the last 30 days actually ask for, set against what your master CV evidences. Use it to decide what to learn next and where to look.</p></div></section><div style="height:18px"></div><div id="ins"><div class="card empty">Reading recent job descriptions…</div></div>`}
+async function loadInsights(){const box=$('#ins');if(!box)return;try{INS=INS||await api('/api/insights')}catch(e){box.innerHTML=`<div class="note bad">${esc(e.message)}</div>`;return}
+  const I=INS,max=Math.max(1,...I.skills.map(s=>s.count)),gaps=I.skills.filter(s=>s.have!=='yes').slice(0,3);
+  const barRows=(rows,total)=>rows.map(([k,n])=>`<div class="frow" style="grid-template-columns:130px 1fr 40px"><span class="small">${esc(k)}</span><div class="ftrack" style="height:16px"><div class="fbar" style="width:${n/Math.max(1,total)*100}%;background:var(--blue)"></div></div><span class="small muted mono">${n}</span></div>`).join('');
+  box.innerHTML=`${gaps.length?`<div class="note info"><b>Biggest gaps by demand:</b> ${gaps.map(g=>`${esc(g.name)} (${Math.round(g.count/I.jobsAnalysed*100)}% of roles)`).join(' · ')}. Closing one of these widens the roles you qualify for more than anything else.</div>`:''}
+  <div class="grid" style="margin-top:16px;grid-template-columns:minmax(0,1.4fr) minmax(300px,1fr)"><section class="card pad"><div style="display:flex;justify-content:space-between;align-items:baseline"><p class="ttl">Skills demand vs your evidence</p><span class="small muted">${I.jobsAnalysed} job descriptions</span></div>
+   <div class="funnel">${I.skills.map(s=>`<div class="frow" style="grid-template-columns:minmax(110px,170px) minmax(60px,1fr) auto"><span class="small">${esc(s.name)}</span><div class="ftrack" style="height:16px"><div class="fbar" style="width:${s.count/max*100}%;background:var(--${s.have==='yes'?'acc':s.have==='partial'?'s-offer':'s-rejected'})"></div></div><span class="small mono" style="display:flex;gap:6px;justify-content:flex-end;align-items:center">${Math.round(s.count/I.jobsAnalysed*100)}% <span class="chip ${HAVE[s.have][0]}">${HAVE[s.have][1]}</span></span></div>`).join('')}</div></section>
+  <div style="display:grid;gap:16px"><section class="card pad"><p class="ttl">Where the roles are</p><div class="funnel">${barRows(I.locations,I.locations.reduce((n,[,c])=>n+c,0))}</div></section>
+   <section class="card pad"><p class="ttl">Role types</p><div class="funnel">${barRows(I.families,I.families.reduce((n,[,c])=>n+c,0))}</div></section></div></div>
+  <div class="grid" style="margin-top:16px"><section class="card pad"><p class="ttl">Screening outcomes</p>${I.screening.total?`<div class="chips" style="margin:10px 0">${I.screening.byVerdict.map(([v,n])=>`<span class="chip ${v==='DO NOT APPLY'?'bad':'warn'}">${esc(v)} · ${n}</span>`).join('')}</div><ul class="tl">${I.screening.reasons.map(r=>`<li><span style="flex:1"><b>${esc(r.company||'')}</b> <span class="muted">${esc(r.title||'')}</span><div class="small muted">${esc(r.reason)}</div></span><span class="chip">${esc(r.verdict)}</span></li>`).join('')}</ul>`:'<p class="small muted">Nothing screened yet. Once the autopilot runs, you see here which roles it rejected and why.</p>'}</section></div>`}
+/* ---------- Matches: every role the automation has judged, grouped by verdict ---------- */
+const VORDER=['STRONG MATCH','GOOD MATCH','STRETCH','WEAK MATCH','DO NOT APPLY'];
+const VCHIP={'STRONG MATCH':'acc','GOOD MATCH':'blue','STRETCH':'warn','WEAK MATCH':'bad','DO NOT APPLY':'bad'};
+function allMatches(){
+  const rows=[],inApps=new Set();
+  for(const a of apps()){const v=a.verdict||a.screenVerdict;if(!v)continue;inApps.add(a.jccJobId);
+    rows.push({verdict:v,role:a.role,company:a.company,location:a.location,source:a.source,posted:a.postedAt,reason:a.summary&&a.summary!=='Waiting for 56-point analysis and tailoring.'?a.summary:(a.screenReason||''),stage:LABEL[a.status],status:a.status,appId:a.id,url:a.url});}
+  const D=S.data.discovery;
+  for(const j of (D.available?D.jobs:[]))if(j.screen&&!inApps.has(j.id))rows.push({key:String(j.id),verdict:j.screen.verdict,role:j.title,company:j.company,location:j.location,source:j.source||'LinkedIn',posted:j.posted||j.seen,reason:j.screen.reason,stage:'Ruled out',status:'ruledout',url:j.url});
+  for(const x of S.data.screenedExternal||[])rows.push({key:x.key,verdict:x.verdict,role:x.title||'',company:x.company||'',location:'',source:x.source||'Indeed',posted:x.at,reason:x.reason,stage:'Ruled out',status:'ruledout',url:''});
+  return rows.filter(match);
+}
+function vMatches(){const rows=allMatches(),f=S.vfilter||'all';
+  const counts=Object.fromEntries(VORDER.map(v=>[v,rows.filter(r=>r.verdict===v).length]));
+  const shown=f==='all'?rows:rows.filter(r=>r.verdict===f);
+  const groups=VORDER.filter(v=>f==='all'||v===f).map(v=>[v,shown.filter(r=>r.verdict===v)]).filter(([,r])=>r.length);
+  return `<section class="hello"><div><h2>Matches</h2><p>Every role the automation has judged against your CV with the 56-point rules. Strong, good and stretch roles are queued and tailored automatically; weak matches and knockouts are ruled out, with the reason.</p></div></section><div style="height:18px"></div>
+  <div class="filters"><div class="seg"><button data-vf="all" class="${f==='all'?'on':''}">All · ${rows.length}</button>${VORDER.map(v=>`<button data-vf="${v}" class="${f===v?'on':''}">${v.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase())} · ${counts[v]}</button>`).join('')}</div></div>
+  ${groups.length?groups.map(([v,list])=>`<div class="sechead" style="margin-top:20px"><h3><span class="chip ${VCHIP[v]}" style="font-size:12px;vertical-align:2px">${v}</span> ${list.length}</h3></div><div class="card"><table><thead><tr><th>Role</th><th>Location</th><th>Source</th><th>Posted</th><th>Why</th><th>Stage</th><th></th></tr></thead><tbody>${list.map(r=>`<tr ${r.appId?`data-open="${r.appId}" style="cursor:pointer"`:''}><td><div class="role">${esc(r.role)}</div><div class="small muted">${esc(r.company)}</div></td><td class="small">${esc(r.location||'')}</td><td class="small muted">${esc(r.source||'')}</td><td class="small muted mono c-opt">${ago(r.posted)}</td><td class="small" style="max-width:420px">${esc(r.reason||'')}</td><td>${r.status==='ruledout'?'<span class="chip">Ruled out</span>':`${dot(r.status)} <span class="small">${esc(r.stage)}</span>`}</td><td style="text-align:right;white-space:nowrap">${r.url?`<a class="btn sm ghost" href="${esc(r.url)}" target="_blank" rel="noopener">View ↗</a>`:''}${r.appId?`<button class="btn sm" data-open="${r.appId}">${r.appId}</button>`:''}${r.status==='ruledout'&&r.key?`<button class="btn sm" data-anyway="${esc(r.key)}" data-label="${esc(r.company+', '+r.role)}">Tailor anyway</button><button class="btn sm ghost" data-delrole="${esc(r.key)}" data-label="${esc(r.company+', '+r.role)}">✕</button>`:''}</td></tr>`).join('')}</tbody></table></div>`).join(''):'<div class="card empty">Nothing judged yet. Click Search: every new role gets a verdict here.</div>'}`}
+
+/* ---------- apply mode, auto-apply, delete, override, edit ---------- */
+function stageNote(a){const A=S.data.autopilot,ahead=apps().filter(x=>x.status==='queued'&&x.id<a.id).length;
+  if(a.status==='queued')return `<div class="note info"><b>Waiting to be tailored.</b> ${A.running?(ahead?`${ahead} role(s) ahead of it; it starts automatically.`:'Next in line; it starts automatically.'):'Starting shortly.'} You don't need to do anything: it moves to Ready to apply when the CV and letter pass every check.</div>`;
+  if(a.status==='tailoring')return `<div class="note info"><span class="pulse on" style="display:inline-block;width:8px;height:8px;margin-right:6px"></span><b>Tailoring now:</b> reading the job description, scoring the match, writing the CV and letter from your master CV, then running every check. About 2–5 minutes.</div>`;
+  if(a.status==='draft'){const r=a.buildReport;return `<div class="note warn"><b>Needs your attention:</b> ${esc((a.history||[]).at(-1)?.note||'')} ${r&&!r.passed?esc(r.errors.slice(0,3).join(' · ')):''} Use <b>Tailor again</b>, or <b>Mark ready anyway</b> if you're happy with it.</div>`;}
+  if(a.status==='ready')return `<div class="note ok"><b>Ready to apply.</b> Open the posting and apply${canAuto(a)?', or press Auto-apply':''}; then press Mark as sent.</div>`;
+  return '';}
+
+const applyMode=()=>S.data.autopilot.settings.applyMode==='auto'?'auto':'manual';
+function modeSwitch(){const m=applyMode();return `<div class="seg" title="Manual: you submit every application. Auto: each Search also submits ready packages on supported company forms (Greenhouse, Lever, Ashby)."><button data-mode="manual" class="${m==='manual'?'on':''}">Manual apply</button><button data-mode="auto" class="${m==='auto'?'on':''}">Auto apply</button></div>`}
+function applyBlock(a){const t=a.applyAttempt,r=a.route||{};
+  if(t)return `<div class="note ${t.status==='submitted'?'ok':t.status==='dry-run'?'info':'warn'}"><b>${t.status==='submitted'?'Auto-applied':t.status==='dry-run'?'Dry run':t.status==='unconfirmed'?'Submitted? Check it':'Apply yourself'}:</b> ${esc(t.reason)}${t.applyUrl?` · <a href="${esc(t.applyUrl)}" target="_blank" rel="noopener">application page ↗</a>`:''}</div>`;
+  if(r.auto===true)return `<div class="note info">Auto-apply can submit this on ${esc(r.via)}.</div>`;
+  if(r.auto==='maybe')return `<div class="note info">${esc(r.note)}</div>`;
+  return r.note?`<div class="note warn">Apply yourself: ${esc(r.note)}</div>`:'';}
+const canAuto=a=>a.route&&a.route.auto!==false&&a.status==='ready';
+async function doApply(id,dryRun){const a=apps().find(x=>x.id===id);if(!dryRun&&!confirm(`Submit ${a.company}, ${a.role} now on the company's form?\n\nIt fills only answers from your master CV and Profile, attaches the CV and cover letter, and stops on anything it cannot answer truthfully.`))return;
+  toast(dryRun?'Filling the form without submitting…':'Applying… this takes up to a minute');try{const r=await api(`/api/app/${encodeURIComponent(id)}/apply`,{dryRun});toast(r.status==='submitted'?'Submitted. Marked as sent; follow-ups scheduled.':r.status==='dry-run'?'Dry run: every field filled, nothing sent.':`Not submitted: ${r.reason}`)}catch(e){toast(e.message)}await load()}
+async function delApp(id){const a=apps().find(x=>x.id===id);const m=modal(`<b style="font:700 18px var(--head)">Delete ${esc(a.company)}, ${esc(a.role)}?</b><p class="small muted" style="margin:0">The folder moves to Applications\\_deleted, so you can still recover it.</p>${a.jccJobId?'<label class="small" style="display:flex;gap:8px;align-items:center;font-weight:400"><input type="checkbox" id="hide" checked> Also stop this role showing up in future searches</label>':''}<div class="actions" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><button class="btn" style="background:var(--bad);color:#fff;border-color:transparent" data-y>Delete</button></div>`,async(e,mm)=>{if(!e.target.closest('[data-y]'))return;const hide=$('#hide',mm)?.checked;mm.remove();try{await api(`/api/app/${encodeURIComponent(id)}/delete`,{hide});toast('Deleted (recoverable from _deleted)');closeDrawer()}catch(x){toast(x.message)}await load()})}
+async function delRole(key,label){if(!confirm(`Remove ${label}?\n\nIt is deleted from Discover and will not come back in future searches.`))return;try{await api('/api/job/delete',{key});toast('Role removed')}catch(e){toast(e.message)}await load()}
+async function tailorAnyway(key,label){if(!confirm(`Tailor ${label} anyway?\n\nThe screening ruled it out; this overrides that and builds a CV and letter, still only from your real experience.`))return;try{const a=await api('/api/job/tailor-anyway',{key});toast(`${a.id} queued; tailoring starts now`)}catch(e){toast(e.message)}await load()}
+async function overrideApp(id,action){if(action==='ready'&&!confirm('Mark this ready even though it failed some checks? The failed checks stay listed on the card.'))return;try{await api(`/api/app/${encodeURIComponent(id)}/override`,{action});toast(action==='ready'?'Marked ready (override recorded)':'Queued to tailor again')}catch(e){toast(e.message)}await load()}
+async function saveEdit(id,p,text,btn){btn.disabled=true;btn.textContent='Rebuilding…';try{const r=await api(`/api/app/${encodeURIComponent(id)}/edit`,{p,text});toast(r.passed?'Saved and rebuilt: all checks pass':'Saved, but the rebuild failed a check: see Overview');}catch(e){toast(e.message)}await load()}
+function bindControls(root=document){
+  $$('[data-mode]',root).forEach(b=>b.onclick=async()=>{const mode=b.dataset.mode;if(mode==='auto'&&!confirm('Switch to Auto apply?\n\nFrom the next Search, ready packages are submitted automatically on supported company forms (Greenhouse, Lever, Ashby) using your Profile answers. Anything needing a login, a CAPTCHA or an answer you have not given is left for you.'))return;await api('/api/autopilot/config',{applyMode:mode});toast(mode==='auto'?'Auto apply is on':'Manual apply: you submit everything');load()});
+  $$('[data-apply]',root).forEach(b=>b.onclick=e=>{e.stopPropagation();doApply(b.dataset.apply,b.hasAttribute('data-dry'))});
+  $$('[data-delapp]',root).forEach(b=>b.onclick=e=>{e.stopPropagation();delApp(b.dataset.delapp)});
+  $$('[data-delrole]',root).forEach(b=>b.onclick=e=>{e.stopPropagation();delRole(b.dataset.delrole,b.dataset.label||'this role')});
+  $$('[data-anyway]',root).forEach(b=>b.onclick=e=>{e.stopPropagation();tailorAnyway(b.dataset.anyway,b.dataset.label||'this role')});
+  $$('[data-override]',root).forEach(b=>b.onclick=e=>{e.stopPropagation();const [id,act]=b.dataset.override.split(':');overrideApp(id,act)});
+  $$('[data-edit]',root).forEach(b=>b.onclick=()=>{const box=b.closest('.card').querySelector('[data-editbox]');box.hidden=!box.hidden;});
+  $$('[data-saveedit]',root).forEach(b=>b.onclick=()=>{const [id,p]=b.dataset.saveedit.split(':');saveEdit(id,+p,b.closest('[data-editbox]').querySelector('textarea').value,b)});
+}
+
+/* ---------- scores, checks and changes (all computed by the build) ---------- */
+const MCOL={EXACT:'acc',VARIANT:'acc',SYNONYM:'warn',MISSING:'bad',STRONG:'acc',PARTIAL:'warn',ADJACENT:'warn',NONE:'bad'};
+function checksBlock(a){const c=a.buildReport?.checks;if(!c)return '';const p=c.parse,w=c.writing;
+  return `<p class="ttl" style="margin:18px 0 8px">ATS parse check <span class="small muted">(text read back from the PDF, as an ATS does)</span></p><div class="chips">${(p?.checks||[]).map(x=>`<span class="chip ${x.ok?'acc':'bad'}">${x.ok?'✓':'✗'} ${esc(x.check)}</span>`).join('')}</div>
+  <p class="ttl" style="margin:16px 0 8px">Human-writing check</p>${w?.ok?'<div class="note ok">No AI-style phrasing, clichés, repeated phrases or mechanical sentence rhythm found.</div>':`<div class="note warn">${(w?.flags||[]).map(esc).join('<br>')}</div>`}`}
+function matchTab(a){const c=a.buildReport?.checks;if(!c?.ats||!c?.recruiter)return '<div class="note info">Not built with the new checks yet.</div>';const k=c.ats,r=c.recruiter,f=c.firstPass;
+  const gaps=k.terms.filter(t=>t.after==='MISSING');
+  return `<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))"><div class="card pad"><p class="ttl">Recruiter evidence: ${r.score}</p><p class="small muted" style="margin:4px 0 0">Σ weight × match × evidence quality ÷ Σ weight${r.capped?`, capped at ${r.cap} because ${r.gatesMissing} hard gate(s) are missing`:''}. Verdict: <b>${esc(r.verdict)}</b>.</p></div>
+  <div class="card pad"><p class="ttl">ATS keywords: ${k.atsBefore} → ${k.atsAfter}</p><p class="small muted" style="margin:4px 0 0">${k.terms.length} terms found in the job description (marketing, benefits and EEO text excluded). Score is the weighted share present: exact 1.0, variant 0.95, synonym 0.75.</p></div>
+  <div class="card pad"><p class="ttl">First-pass signal: ${f.score}</p><p class="small muted" style="margin:4px 0 0">Role identity ${f.parts.identity}, visibility ${f.parts.visibility}, credibility ${f.parts.credibility}, relevance density ${f.parts.density}, risk flags ${f.parts.risk} (each out of 20). Risk is lower because your last role ended in Oct 2025.</p></div></div>
+  ${gaps.length?`<div class="note warn" style="margin-top:14px"><b>Job-description keywords not on your CV:</b> ${gaps.map(t=>esc(t.term)).join(', ')}. Your master CV has no evidence for these, so they were not added.</div>`:''}
+  <p class="ttl" style="margin:18px 0 8px">Keywords in the job description</p><div class="card"><table><thead><tr><th>Term</th><th>Weight</th><th>Your master CV</th><th>Tailored CV</th></tr></thead><tbody>${k.terms.map(t=>`<tr><td>${esc(t.term)}</td><td class="mono">${t.weight}</td><td><span class="chip ${MCOL[t.before]}">${t.before.toLowerCase()}</span></td><td><span class="chip ${MCOL[t.after]}">${t.after.toLowerCase()}</span></td></tr>`).join('')}</tbody></table></div>
+  <p class="ttl" style="margin:18px 0 8px">Requirements against your evidence</p><div class="card"><table><thead><tr><th>Requirement</th><th>Weight</th><th>Match</th><th>Evidence from</th><th>Adds</th><th>Where</th></tr></thead><tbody>${r.rows.map(x=>`<tr><td>${esc(x.req)}${x.gate?' <span class="chip warn">gate</span>':''}</td><td class="mono">${x.weight}</td><td><span class="chip ${MCOL[x.match]||''}">${esc(String(x.match).toLowerCase())}</span></td><td class="small">${esc(x.quality||'')}</td><td class="mono small">${(x.weight*x.E*x.Q).toFixed(1)}</td><td class="small muted">${esc(x.evidence||'—')}</td></tr>`).join('')}</tbody></table></div>`}
+function changesTab(a){const ch=a.buildReport?.changes||[];if(!ch.length)return '<div class="note info">No change log yet.</div>';
+  return `<div class="note info" style="margin-bottom:14px">Tailored from your master CV on <b>${when(a.tailoredAt||a.buildReport.builtAt)}</b>: ${ch.filter(c=>c.kind==='rewritten').length} paragraphs reworded, ${ch.filter(c=>c.kind==='moved').length} moved. Nothing from your master was removed.</div>
+  ${ch.map(c=>`<div class="card pad" style="margin-bottom:10px"><div class="small muted" style="margin-bottom:6px">${esc(c.section||'')} · paragraph ${c.p} · ${esc(c.kind)}</div>${c.kind==='moved'?`<div class="small">${esc(c.before)} <b>${esc(c.after)}</b></div>`:`<div class="grid" style="grid-template-columns:1fr 1fr;gap:12px"><div><div class="small muted">Your master</div><div class="small">${esc(c.before)}</div></div><div><div class="small muted" style="display:flex;justify-content:space-between">Tailored <button class="btn sm ghost" data-edit>Edit</button></div><div class="small">${esc(c.after)}</div></div></div><div data-editbox hidden style="margin-top:10px"><textarea class="f" style="width:100%;min-height:90px">${esc(c.after)}</textarea><div class="actions" style="margin-top:6px"><button class="btn sm pri" data-saveedit="${a.id}:${c.p}">Save and rebuild</button><span class="small muted">Rebuilt with every check: facts, metrics, XYZ form, length, keywords.</span></div></div>`}</div>`).join('')}`}
+
+/* ---------- drawer ---------- */
+function drawer(id){const a=apps().find(x=>x.id===id);if(!a){closeDrawer();return}S.drawer=id;const d=$('#drawer');
+  const docs=a.files.filter(f=>/\.(pdf|md)$/i.test(f));if(!S.doc||!docs.includes(S.doc))S.doc=docs.find(f=>/ CV - .*\.pdf$/i.test(f))||docs[0]||null;
+  let body0='';const tabs=[['overview','Overview'],['match','Match & scores'],['changes','What changed'],['docs','CV & letter'],['timeline','Timeline'],['notes','Notes']],r=a.buildReport,P=S.data.profile||{};let body='';
+  if(S.tab==='overview'){body0=stageNote(a)+applyBlock(a);const answers=[['Right to work',P.rightToWork],['Visa',P.visa],['Notice',P.noticePeriod],['Available',P.availableFrom],['Salary UK',P.salaryUK],['Salary EU',P.salaryEU],['Salary UAE',P.salaryUAE],['Relocation',P.relocation]].filter(([,v])=>v);
+    body=`${body0}${a.override?`<div class="note warn">Override: ${esc(a.override.what)}${a.override.priorVerdict?` (screened ${esc(a.override.priorVerdict)}: ${esc(a.override.priorReason||'')})`:''}</div>`:''}${scoreBlock(a)}<div style="height:14px"></div>${a.summary?`<p style="margin:0 0 12px">${esc(a.summary)}</p>`:''}${openQs(a)}
+    ${answers.length?`<p class="ttl" style="margin:16px 0 8px">Your answers for the form</p><div class="chips">${answers.map(([k,v])=>`<button class="chip blue" style="border:0;cursor:pointer" data-copytext="${esc(v)}" title="Copy">${esc(k)}: ${esc(v)}</button>`).join('')}</div>`:`<div class="note info" style="margin-top:10px">Fill in <a href="#profile">Profile & CV</a> once and your visa, notice and salary answers appear here, ready to copy.</div>`}
+    ${checksBlock(a)}
+    ${r?`<p class="ttl" style="margin:18px 0 8px">Build checks</p>${r.passed?`<div class="note ok">Passed: ${r.cv?.pages}-page CV${r.letter?`, ${r.letter.pages}-page letter`:''}, ${Math.round(r.bulletsRewrittenShare*100)}% of bullets rewritten, no unsupported claims.</div>`:`<div class="note bad">${r.errors.map(esc).join('<br>')}</div>`}${r.warnings?.length?`<div class="note warn" style="margin-top:8px">${r.warnings.map(esc).join('<br>')}</div>`:''}`:''}
+    <p class="ttl" style="margin:18px 0 8px">Details</p><ul class="tl"><li><span class="muted" style="width:100px">Source</span>${esc(a.source||'—')}</li><li><span class="muted" style="width:100px">Posted</span>${fmt(a.postedAt)}</li><li><span class="muted" style="width:100px">Folder</span><span class="small">${esc(a.folder)}</span></li></ul>`}
+  if(S.tab==='match')body=matchTab(a);
+  if(S.tab==='changes')body=changesTab(a);
+  if(S.tab==='docs')body=`<div class="docs"><div>${docs.length?`<div class="filters"><div class="seg">${docs.map(f=>`<button data-doc="${esc(f)}" class="${S.doc===f?'on':''}">${esc(/Cover Letter/.test(f)?'Cover letter':/ CV - /.test(f)?'CV':f.replace(/\.\w+$/,''))}</button>`).join('')}</div><button class="btn sm" style="margin-left:auto" data-openfile="${esc(S.doc)}">Open file</button><button class="btn sm" data-folder="${a.id}">Folder</button></div><iframe class="doc" src="/files/${encodeURIComponent(a.id)}/${encodeURIComponent(S.doc)}"></iframe>`:'<div class="empty">No documents yet.</div>'}</div>
+    <div class="card pad refine"><p class="ttl">Refine with AI</p><p class="small muted" style="margin:0">Ask for a change, e.g. “shorten the profile” or “lead with commodities”. Claude edits and rebuilds with the same truth checks, and refuses anything your CV can't back up.</p>
+    ${(a.refinements||[]).slice(-4).map(x=>`<div class="msg me">${esc(x.ask)}</div><div class="msg ai">${esc(x.reply||(x.ok?'Done.':'Failed.'))}</div>`).join('')}
+    ${a.refining?'<div class="note info">Refining… this takes a minute or two.</div>':`<textarea class="f" id="refine" rows="3" placeholder="What should change?"></textarea><button class="btn pri" data-refine>Send</button>`}</div></div>`;
+  if(S.tab==='timeline')body=`<ul class="tl">${(a.history||[]).slice().reverse().map(h=>`<li>${dot(h.status)}<span>${LABEL[h.status]||esc(h.status)}${h.note?` · <span class="muted">${esc(h.note)}</span>`:''}</span><span class="muted small" style="margin-left:auto">${fmt(h.at)}</span></li>`).join('')}</ul>
+    ${(a.followUps||[]).length?`<p class="ttl" style="margin:18px 0 8px">Follow-ups</p><ul class="tl">${a.followUps.map(f=>`<li>${dot(f.done?'accepted':+new Date(f.due)<=Date.now()?'offer':'draft')}<span>${esc(f.kind)}</span><span class="muted small" style="margin-left:auto">${f.done?(f.done==='superseded'?'Not needed':'Done'):fmt(f.due)}</span></li>`).join('')}</ul>`:''}
+    <p class="ttl" style="margin:18px 0 8px">Add interview</p><div class="filters"><input type="datetime-local" id="iv-at" class="f"><input id="iv-stage" class="f" placeholder="Stage, e.g. First round"><button class="btn sm" data-addiv>Add</button></div>`;
+  if(S.tab==='notes')body=`<textarea class="f notes" id="notes" placeholder="Recruiter names, what was asked, salary discussed…">${esc(a.notes||'')}</textarea><p class="small muted">Saved automatically.</p>`;
+  const moves=Object.keys(LABEL).filter(s=>s!==a.status&&s!=='tailoring');
+  d.innerHTML=`<div class="dh"><div style="display:flex;gap:8px;align-items:center">${dot(a.status)}<span class="small muted">${LABEL[a.status]} · ${esc(a.id)}</span><button class="iconbtn" style="margin-left:auto" data-close aria-label="Close">✕</button></div><h3>${esc(a.role)}</h3><div class="muted">${esc(a.company)} · ${esc(a.location||'')}</div>
+  <div class="actions" style="margin-top:12px">${verdictChip(a.verdict)}<span style="flex:1"></span>${a.url?`<a class="btn pri" href="${esc(a.url)}" target="_blank" rel="noopener">Open posting ↗</a>`:''}${canAuto(a)?`<button class="btn acc" data-apply="${a.id}">Auto-apply</button>`:''}${a.status==='ready'?`<button class="btn acc" data-sent="${a.id}">Mark as sent</button>`:''}${a.status==='draft'&&a.files.some(f=>/ CV - .*\.pdf$/.test(f))?`<button class="btn" data-override="${a.id}:ready">Mark ready anyway</button>`:''}${['draft','ready'].includes(a.status)?`<button class="btn" data-override="${a.id}:requeue">Tailor again</button>`:''}<button class="btn ghost" data-delapp="${a.id}">Delete</button><select class="f" id="moveto"><option value="">Move to…</option>${moves.map(s=>`<option value="${s}">${LABEL[s]}</option>`).join('')}</select></div></div>
+  <div class="tabs">${tabs.map(([k,l])=>`<button data-tab="${k}" class="${S.tab===k?'on':''}">${l}</button>`).join('')}</div><div class="db">${body}</div>`;
+  d.classList.add('on');$('#scrim').classList.add('on');bindDrawer(a)}
+function closeDrawer(){S.drawer=null;$('#drawer').classList.remove('on');$('#scrim').classList.remove('on')}
+
+/* ---------- actions ---------- */
+async function setStatus(id,status){try{await api(`/api/app/${encodeURIComponent(id)}/status`,{status});toast(status==='sent'?'Marked as sent. Follow-ups scheduled for 7, 14 and 30 days.':`Moved to ${LABEL[status]}.`);await load()}catch(e){toast(e.message)}}
+function modal(html,onClick){const m=document.createElement('div');m.className='modal';m.innerHTML=`<div class="card">${html}</div>`;document.body.append(m);m.addEventListener('click',e=>{if(e.target===m||e.target.closest('[data-x]'))return m.remove();onClick?.(e,m)});return m}
+function confirmSent(id){const a=apps().find(x=>x.id===id);modal(`<b style="font:700 18px var(--head)">Did you submit it?</b><p class="small muted" style="margin:0">Mark ${esc(a.company)} as sent only after submitting on their site. This saves a hashed copy of exactly what you sent and schedules the follow-ups.</p><div class="actions" style="justify-content:flex-end"><button class="btn" data-x>Not yet</button><button class="btn acc" data-y>Yes, I applied</button></div>`,(e,m)=>{if(e.target.closest('[data-y]')){m.remove();setStatus(id,'sent')}})}
+function chooseClosed(id){modal(`<b style="font:700 18px var(--head)">How did it end?</b><div class="actions">${CLOSED.map(s=>`<button class="btn" data-c="${s}">${LABEL[s]}</button>`).join('')}</div>`,(e,m)=>{const b=e.target.closest('[data-c]');if(b){m.remove();setStatus(id,b.dataset.c)}})}
+function addJob(){const m=modal(`<b style="font:700 18px var(--head)">Add a job</b><p class="small muted" style="margin:0">For roles from LinkedIn, eFinancialCareers, Indeed, a recruiter's email or anywhere else. It's queued and tailored automatically.</p>
+  <form id="f-add" style="display:grid;gap:10px"><label>Company<input class="f" name="company" required></label><label>Role<input class="f" name="role" required></label><label>Location<input class="f" name="location"></label><label>Posting URL<input class="f" name="url" placeholder="https://…"></label><label>Job description<textarea class="f" name="jd" rows="9" placeholder="Paste the full description" required></textarea></label>
+  <div class="actions" style="justify-content:flex-end"><button type="button" class="btn" data-x>Cancel</button><button class="btn pri">Add and tailor</button></div></form>`);
+  $('#f-add',m).onsubmit=async e=>{e.preventDefault();const b=Object.fromEntries(new FormData(e.target));try{const a=await api('/api/import',b);m.remove();toast(`${a.company} added as ${a.id}. Tailoring starts now; follow it on the card.`);await load();S.tab='overview';drawer(a.id)}catch(x){toast(x.message)}}}
+async function form(id,path,msg){const f=$(id);if(!f)return;f.onsubmit=async e=>{e.preventDefault();const b=Object.fromEntries(new FormData(f));try{await api(path,b);toast(msg);f.reset();await load()}catch(x){toast(x.message)}}}
+function bind(){bindControls();bindReady();
+  $$('[data-open]').forEach(el=>el.addEventListener('click',e=>{if(e.target.closest('a,[data-queue],[data-sent],[data-folder]')&&!el.matches('a'))return;e.preventDefault();S.tab=el.dataset.tab||'overview';drawer(el.dataset.open)}));
+  $$('[data-sent]').forEach(el=>el.addEventListener('click',e=>{e.stopPropagation();confirmSent(el.dataset.sent)}));
+  $$('[data-folder]').forEach(el=>el.addEventListener('click',e=>{e.stopPropagation();api('/api/open',el.dataset.folder?{id:el.dataset.folder}:{}).catch(x=>toast(x.message))}));
+  $$('[data-queue]').forEach(el=>el.addEventListener('click',async e=>{e.stopPropagation();el.disabled=true;try{const a=await api('/api/queue',{jobId:Number(el.dataset.queue)});toast(`${a.company} queued as ${a.id}. Tailoring starts now; follow it on the card.`);await load();S.tab='overview';drawer(a.id)}catch(x){toast(x.message);el.disabled=false}}));
+  $$('[data-vf]').forEach(el=>el.onclick=()=>{S.vfilter=el.dataset.vf;render()});
+  $$('[data-age]').forEach(el=>el.onclick=()=>{S.age=el.dataset.age;store.set('age',S.age);render()});$$('[data-show]').forEach(el=>el.onclick=()=>{S.show=el.dataset.show;render()});
+  $('#loc')?.addEventListener('change',e=>{S.loc=e.target.value;render()});
+  const setSort=v=>{S.dsort=v;store.set('dsort',v);render()};$('#dsort')?.addEventListener('change',e=>setSort(e.target.value));$$('[data-dsort]').forEach(el=>el.onclick=()=>setSort(S.dsort==='newest'?'oldest':'newest'));
+  $$('[data-copy]').forEach(el=>el.onclick=()=>{const f=dueFollowUps().filter(f=>match(f.app))[+el.dataset.copy];navigator.clipboard.writeText(followText(f)).then(()=>toast('Follow-up email copied'),()=>toast('Copy failed'))});
+  $$('[data-fdone]').forEach(el=>el.onclick=async()=>{const [id,n]=el.dataset.fdone.split(':');await api(`/api/app/${id}/update`,{followUpDone:+n});toast('Follow-up marked done');load()});
+  $$('[data-status]').forEach(el=>el.onclick=()=>{const [id,s]=el.dataset.status.split(':');setStatus(id,s)});
+  $$('[data-cal]').forEach(el=>el.onclick=()=>{S.cal=new Date(S.cal.getFullYear(),S.cal.getMonth()+ +el.dataset.cal,1);render()});
+  $$('[data-aptoggle]').forEach(el=>el.onclick=async()=>{await api('/api/autopilot/config',{autopilot:!S.data.autopilot.settings.autopilot});load()});
+  $$('[data-settoggle]').forEach(el=>el.onclick=async e=>{e.preventDefault();const k=el.dataset.settoggle;await api('/api/autopilot/config',{[k]:!S.data.autopilot.settings[k]});load()});
+  $$('[data-set]').forEach(el=>el.onchange=async()=>{const k=el.dataset.set,v=el.value;await api('/api/autopilot/config',{[k]:/^\d+$/.test(v)?+v:v});toast('Saved');load()});
+  $$('[data-runap]').forEach(el=>el.onclick=runAutopilot);$$('[data-tailornow]').forEach(el=>el.onclick=async()=>{await api('/api/autopilot/run',{discover:false});toast('Tailoring started');load()});
+  $$('[data-runsearch]').forEach(el=>el.onclick=async()=>{try{await api('/api/jcc/run',{});toast('Search started. New roles appear in Discover as they arrive.')}catch(e){toast(e.message)}});
+  $$('[data-startjcc]').forEach(el=>el.onclick=async()=>{await api('/api/jcc/start',{});toast('Starting JCC…');setTimeout(load,6000)});
+  form('#f-source','/api/sources','Source added; JCC tests it on the next search');form('#f-role','/api/roles','Role added to searches');form('#f-loc','/api/locations','Location added to searches');form('#f-profile','/api/profile','Answers saved');
+  $$('.bc').forEach(c=>{c.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',c.dataset.card);c.classList.add('dragging')});c.addEventListener('dragend',()=>c.classList.remove('dragging'))});
+  $$('.col').forEach(col=>{col.addEventListener('dragover',e=>{e.preventDefault();col.classList.add('over')});col.addEventListener('dragleave',()=>col.classList.remove('over'));col.addEventListener('drop',e=>{e.preventDefault();col.classList.remove('over');const id=e.dataTransfer.getData('text/plain'),to=col.dataset.col,a=apps().find(x=>x.id===id);if(!a||a.status===to||to==='tailoring')return;if(to==='closed')chooseClosed(id);else if(to==='sent')confirmSent(id);else setStatus(id,to)})});
+}
+function bindDrawer(a){const d=$('#drawer');bindControls(d);
+  $('[data-close]',d).onclick=closeDrawer;$$('[data-tab]',d).forEach(b=>b.onclick=()=>{S.tab=b.dataset.tab;drawer(a.id)});$$('[data-doc]',d).forEach(b=>b.onclick=()=>{S.doc=b.dataset.doc;drawer(a.id)});
+  $$('[data-sent]',d).forEach(b=>b.onclick=()=>confirmSent(a.id));$$('[data-folder]',d).forEach(b=>b.onclick=()=>api('/api/open',{id:a.id}));
+  $$('[data-copytext]',d).forEach(b=>b.onclick=()=>navigator.clipboard.writeText(b.dataset.copytext).then(()=>toast('Copied')));
+  const of=$('[data-openfile]',d);if(of)of.onclick=()=>api('/api/open',{id:a.id,file:S.doc});
+  $('#moveto',d).onchange=e=>{const s=e.target.value;if(!s)return;s==='sent'?confirmSent(a.id):CLOSED.includes(s)?setStatus(a.id,s):setStatus(a.id,s)};
+  const n=$('#notes',d);if(n){let t;n.oninput=()=>{clearTimeout(t);t=setTimeout(()=>api(`/api/app/${a.id}/update`,{notes:n.value}).then(()=>{a.notes=n.value}),600)}}
+  const rf=$('[data-refine]',d);if(rf)rf.onclick=async()=>{const v=$('#refine',d).value.trim();if(!v)return;a.refining=true;drawer(a.id);toast('Refining… this takes a minute or two');try{const r=await api(`/api/app/${a.id}/refine`,{instruction:v});toast('Refined and rebuilt');}catch(e){toast(e.message)}await load()};
+  const iv=$('[data-addiv]',d);if(iv)iv.onclick=async()=>{const at=$('#iv-at',d).value;if(!at)return toast('Pick a date and time');await api(`/api/app/${a.id}/update`,{interview:{at,stage:$('#iv-stage',d).value||'Interview'}});if(!['interview','offer','accepted'].includes(a.status))await api(`/api/app/${a.id}/status`,{status:'interview'});toast('Interview added');load()}}
+async function runAutopilot(){try{await api('/api/autopilot/run',{discover:true});toast('Autopilot started: search, screen, tailor.');setTimeout(load,1500)}catch(e){toast(e.message)}}
+
+// Any external link opens in the default browser as a new tab; the dashboard tab never navigates away.
+document.addEventListener('click',e=>{const l=e.target.closest('a[href^="http"]');if(!l||new URL(l.href).host===location.host)return;e.preventDefault();e.stopPropagation();api('/api/open-url',{url:l.href}).then(()=>toast('Opened in a new browser tab')).catch(()=>window.open(l.href,'_blank','noopener'))},true);
+$('#runap').onclick=runAutopilot;$('#addjob').onclick=addJob;
+$('#scrim').onclick=closeDrawer;document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
+$('#q').addEventListener('input',e=>{S.q=e.target.value.trim().toLowerCase();render()});
+$('#navbtn').onclick=()=>$('#side').classList.toggle('on');$('#nav').addEventListener('click',()=>$('#side').classList.remove('on'));
+const theme=store.get('theme','');if(theme)document.documentElement.dataset.theme=theme;
+$('#theme').onclick=()=>{const dark=document.documentElement.dataset.theme==='dark'||(!document.documentElement.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=dark?'light':'dark';store.set('theme',document.documentElement.dataset.theme)};
+S.age=store.get('age','96h');S.dsort=store.get('dsort','best');for(const k of ['rv','rloc','rsort','rview'])S[k]=store.get(k,'')||undefined;S.rauto=store.get('rauto','')==='1';
+addEventListener('hashchange',()=>{if((location.hash||'').slice(1)==='matches')S.vfilter='all';S.route=(location.hash||'#today').slice(1);render();scrollTo(0,0)});
+S.route=(location.hash||'#today').slice(1);
+load().catch(e=>{$('#view').innerHTML=`<div class="note bad">Could not load: ${esc(e.message)}</div>`});
+// Refresh every 15s (faster while the autopilot is working); skip while typing in a form or a modal is open.
+let lastTick=0;setInterval(()=>{const busy=S.data?.autopilot?.running;if(Date.now()-lastTick<(busy?5000:15000))return;if(document.hidden||$('.modal')||document.activeElement?.matches('input,textarea,select'))return;lastTick=Date.now();load(true).catch(()=>{})},1000);
+</script>
+</body>
+</html>

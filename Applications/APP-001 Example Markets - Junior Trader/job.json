@@ -1,0 +1,129 @@
+{
+  "id": "APP-001",
+  "company": "Example Markets",
+  "role": "Junior Trader",
+  "location": "London, UK",
+  "url": "https://example.com/careers/junior-trader",
+  "source": "Demo",
+  "postedAt": null,
+  "foundAt": "2026-11-24",
+  "status": "ready",
+  "verdict": "STRONG MATCH",
+  "priority": "High",
+  "scores": {
+    "recruiter": 86,
+    "atsBefore": 96,
+    "atsAfter": 96,
+    "firstPass": 76,
+    "hardGates": "1/1 met",
+    "computed": true
+  },
+  "summary": "Execution, risk monitoring and market-note evidence match the desk's daily work closely. Python is basic only, which the posting lists as a plus rather than a requirement.",
+  "gaps": [
+    "Python is basic only (listed as a plus)"
+  ],
+  "history": [
+    {
+      "status": "draft",
+      "at": "2026-11-24T10:11:03.375Z"
+    },
+    {
+      "status": "ready",
+      "at": "2026-11-24T10:12:36.459Z"
+    }
+  ],
+  "sentAt": null,
+  "followUps": [],
+  "contacts": [],
+  "notes": "Fictional demo application for the public repository.",
+  "documents": {
+    "cv": {
+      "pdf": "Alex Morgan CV - Example Markets.pdf",
+      "docx": "Alex Morgan CV - Example Markets.docx",
+      "pages": 2
+    },
+    "letter": {
+      "pdf": "Alex Morgan Cover Letter - Example Markets.pdf",
+      "docx": "Alex Morgan Cover Letter - Example Markets.docx",
+      "pages": 1
+    }
+  },
+  "build": {
+    "at": "2026-11-24T10:12:36.459Z",
+    "passed": true,
+    "errors": 0,
+    "warnings": 0
+  },
+  "openQuestions": [
+    "Right to work in the UK",
+    "Notice period",
+    "Salary expectation in GBP"
+  ],
+  "requirements": [
+    {
+      "req": "Execute trades in equities, futures and options",
+      "weight": 5,
+      "gate": false,
+      "match": "EXACT",
+      "quality": "recent",
+      "evidence": "Northbridge Capital, p10"
+    },
+    {
+      "req": "Monitor daily P&L, margin and position limits",
+      "weight": 5,
+      "gate": false,
+      "match": "EXACT",
+      "quality": "recent",
+      "evidence": "Northbridge Capital, p12"
+    },
+    {
+      "req": "Prepare end-of-day risk summaries and trade reviews",
+      "weight": 4,
+      "gate": false,
+      "match": "EXACT",
+      "quality": "recent",
+      "evidence": "p11, p12"
+    },
+    {
+      "req": "Produce market notes on macro data, earnings and price action",
+      "weight": 3,
+      "gate": false,
+      "match": "EXACT",
+      "quality": "older",
+      "evidence": "Kestrel Capital, p16"
+    },
+    {
+      "req": "Degree in finance or economics",
+      "weight": 4,
+      "gate": true,
+      "match": "EXACT",
+      "quality": "academic",
+      "evidence": "MSc Finance, BSc Economics"
+    },
+    {
+      "req": "Strong Excel skills",
+      "weight": 4,
+      "gate": false,
+      "match": "STRONG",
+      "quality": "recent",
+      "evidence": "Excel journal, p11"
+    },
+    {
+      "req": "Basic Python",
+      "weight": 1,
+      "gate": false,
+      "match": "PARTIAL",
+      "quality": "skills",
+      "evidence": "Python (basic), skills list"
+    },
+    {
+      "req": "Clear written communication",
+      "weight": 3,
+      "gate": false,
+      "match": "STRONG",
+      "quality": "older",
+      "evidence": "Weekly sector notes, p16"
+    }
+  ],
+  "tailoredAt": "2026-11-24T10:12:36.459Z"
+}

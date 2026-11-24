@@ -1,0 +1,38 @@
+node_modules/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+Thumbs.db
+coverage/
+test-results/
+playwright-report/
+# JCC private runtime data must never enter Git
+../JCC-Data/
+../JCC-Knowledge/.obsidian/workspace*
+JCC-Data/
+CV/
+Applications/
+Browser/
+Backups/
+Temp/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.pdf
+*.docx
+*.png
+*.jpg
+*.jpeg
+*.webp
+# Local browser/auth state
+.storage-state.json
+cookies*.json
+browser-profile/
+# Populated Obsidian knowledge vault is private/local
+JCC-Knowledge/
+.bootstrap/
+*.zip
+*.tgz
+*.bak

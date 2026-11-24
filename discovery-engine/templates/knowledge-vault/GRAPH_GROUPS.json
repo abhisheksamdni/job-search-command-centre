@@ -1,0 +1,66 @@
+{
+  "plugin": "New 3D Graph",
+  "fallback": "Three D Graph View",
+  "groups": [
+    {
+      "name": "Candidate / CV",
+      "query": "path:\"Candidate\" OR path:\"CV\"",
+      "color": "#5B8FF9"
+    },
+    {
+      "name": "Skills",
+      "query": "path:\"Skills\" OR tag:#skill",
+      "color": "#61DDAA"
+    },
+    {
+      "name": "Agents",
+      "query": "path:\"Agents\" OR tag:#agent",
+      "color": "#65789B"
+    },
+    {
+      "name": "Jobs",
+      "query": "path:\"Jobs\" OR tag:#job",
+      "color": "#F6BD16"
+    },
+    {
+      "name": "Applications",
+      "query": "path:\"Applications\" OR tag:#application",
+      "color": "#7262FD"
+    },
+    {
+      "name": "Sources / Adapters",
+      "query": "path:\"Sources\" OR tag:#source OR tag:#adapter",
+      "color": "#78D3F8"
+    },
+    {
+      "name": "Architecture",
+      "query": "path:\"Architecture\" OR tag:#architecture",
+      "color": "#9661BC"
+    },
+    {
+      "name": "Decisions",
+      "query": "path:\"Decisions\" OR tag:#decision",
+      "color": "#F6903D"
+    },
+    {
+      "name": "Failures / Fixes",
+      "query": "path:\"Failures\" OR tag:#failure OR tag:#fix",
+      "color": "#E8684A"
+    },
+    {
+      "name": "Interviews / Follow-ups",
+      "query": "path:\"Interviews\" OR path:\"Followups\" OR tag:#interview OR tag:#followup",
+      "color": "#6DC8EC"
+    },
+    {
+      "name": "Releases",
+      "query": "path:\"Releases\" OR tag:#release",
+      "color": "#9270CA"
+    }
+  ],
+  "filters": {
+    "attachments": false,
+    "orphans": false,
+    "tags": true
+  }
+}

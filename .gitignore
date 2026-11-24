@@ -1,0 +1,41 @@
+# Everything personal stays out of Git. Only code, templates and the fictional demo are tracked.
+
+# Private settings (copy the *.example files and fill in your own)
+Applications/_engine/profile.json
+Applications/_engine/candidate.json
+Applications/_engine/candidate-facts.md
+
+# Your real applications: only the fictional demo is tracked
+Applications/APP-*/
+!Applications/APP-001 Example Markets - Junior Trader/
+Applications/_deleted/
+
+# Runtime state, inboxes and logs
+Applications/_engine/inbox/
+Applications/_engine/inbox-indeed/
+Applications/_engine/indeed-archive/
+Applications/_engine/screened.json
+Applications/_engine/autopilot-state.json
+Applications/_engine/master/_archive-*/
+Applications/_engine/master/*.bak
+.spec.clean.json
+*.log
+
+# Search engine data, knowledge vault and packaged releases
+JCC-Data/
+JCC-Knowledge/
+Job Applications/
+Releases/
+_upstream/
+
+# Local tool settings
+.claude/
+
+# Dependencies and OS files
+node_modules/
+.env
+.env.*
+!.env.example
+~$*
+Thumbs.db
+.DS_Store

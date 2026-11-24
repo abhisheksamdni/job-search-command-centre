@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Senior Recruiter Intelligence Record",
+  "type": "object",
+  "required": [
+    "version",
+    "cleanedRequirements",
+    "noise",
+    "hardGates",
+    "evidenceMatrix",
+    "terminologyMap",
+    "improvementInstructions",
+    "finalJudgement"
+  ],
+  "properties": {
+    "version": { "const": "2.0.0-56-point" },
+    "methodology": { "type": "string" },
+    "scoreDisclaimer": { "type": "string" },
+    "cleanedRequirements": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/requirement" }
+    },
+    "noise": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/requirement" }
+    },
+    "hardGates": { "type": "array", "items": { "type": "object" } },
+    "hiringArchetype": { "type": "object" },
+    "candidateArchetype": { "type": "object" },
+    "evidenceMatrix": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "category", "evidenceGrade", "evidenceScore", "adjustedEvidenceScore", "atsLexicalScore"],
+        "properties": {
+          "id": { "type": ["string", "integer"] },
+          "category": { "$ref": "#/$defs/requirementCategory" },
+          "evidenceGrade": { "$ref": "#/$defs/evidenceGrade" },
+          "evidenceScore": { "enum": [0, 0.2, 0.4, 0.65, 0.85, 1] },
+          "adjustedEvidenceScore": { "type": "number", "minimum": 0, "maximum": 1 },
+          "evidenceSourceType": { "type": "string" },
+          "evidenceQualityModifier": { "type": "number", "minimum": 0, "maximum": 1 },
+          "atsLexicalScore": { "enum": [0, 0.4, 0.75, 0.95, 1] },
+          "productionMaturity": { "type": "string" },
+          "factualConfidence": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "evidenceQuality": { "type": "array", "items": { "type": "object" } },
+    "terminologyMap": { "type": "array", "items": { "type": "object" } },
+    "firstPassRecruiterScan": { "type": "object" },
+    "strengths": { "type": "array", "items": { "type": "object" } },
+    "gaps": { "type": "array", "items": { "type": "object" } },
+    "cvPresentationDeficiencies": { "type": "array", "items": { "type": "object" } },
+    "claimDefensibility": { "type": "array", "items": { "type": "object" } },
+    "improvementInstructions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["action", "reason"],
+        "properties": {
+          "action": { "enum": ["SURFACE", "REPHRASE", "STRENGTHEN", "GAP_DO_NOT_ADD", "REMOVE"] },
+          "reason": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "finalJudgement": {
+      "type": "object",
+      "required": ["score", "verdict", "recommendedDecision", "applicationPriority"],
+      "properties": {
+        "score": { "type": "number", "minimum": 0, "maximum": 100 },
+        "verdict": { "enum": ["STRONG MATCH", "GOOD MATCH", "POSSIBLE / STRETCH", "WEAK MATCH", "DO NOT APPLY"] },
+        "recommendedDecision": { "enum": ["APPLY", "REVIEW", "SKIP"] },
+        "applicationPriority": { "enum": ["HIGH", "MEDIUM_HIGH", "STRETCH", "LOW"] }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "requirementCategory": {
+      "enum": ["MANDATORY", "CORE", "IMPORTANT", "PREFERRED", "BONUS", "BEHAVIOURAL", "BACKGROUND", "NOT_A_REQUIREMENT"]
+    },
+    "evidenceGrade": {
+      "enum": ["EXACT_EVIDENCE", "STRONG_EQUIVALENT", "TRANSFERABLE_PARTIAL", "NO_EVIDENCE"]
+    },
+    "requirement": {
+      "type": "object",
+      "required": ["id", "cleanText", "category", "importance"],
+      "properties": {
+        "id": { "type": ["string", "integer"] },
+        "cleanText": { "type": "string" },
+        "exactJdWording": { "type": "string" },
+        "category": { "$ref": "#/$defs/requirementCategory" },
+        "importance": { "type": "integer", "minimum": 0, "maximum": 5 }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

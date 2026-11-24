@@ -1,0 +1,11 @@
+{
+  "employers": ["Northbridge Capital", "Kestrel Capital Limited", "Fenwick Foods"],
+  "headings": ["PROFILE", "WORK EXPERIENCE", "EDUCATION", "SKILLS"],
+  "qualify": [
+    {
+      "term": "\\bpython\\b",
+      "mustMatch": "python\\s*\\(basic\\)",
+      "message": "Python must be shown as \"Python (basic)\", as in the master CV"
+    }
+  ]
+}

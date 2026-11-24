@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Humanizer input",
+  "type": "object",
+  "required": ["text", "domain"],
+  "properties": {
+    "text": {"type": "string"},
+    "domain": {"type": "string", "enum": ["CV", "COVER_LETTER", "APPLICATION_ANSWER", "OUTREACH", "FOLLOW_UP", "INTERVIEW", "GENERAL"]},
+    "regionalEnglish": {"type": ["string", "null"]},
+    "preserveVoice": {"type": "boolean", "default": true}
+  },
+  "additionalProperties": true
+}

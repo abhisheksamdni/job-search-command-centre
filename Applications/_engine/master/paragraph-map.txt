@@ -1,0 +1,40 @@
+﻿  1 TEXT   Alex Morgan
+  2 TEXT   London, UK, +44 20 0000 0000, alex.morgan@example.com, LinkedIn
+  3 BLANK  
+  4 TEXT   PROFILE
+  5 TEXT   Trading analyst with experience across equities, futures and options, combining market analysis, trade execution and daily risk monitoring with structured, data-driven decision making.
+  6 BLANK  
+  7 TEXT   WORK EXPERIENCE
+  8 TEXT   Trading Analyst <TAB> Jan 2023 – Present
+  9 TEXT   Northbridge Capital, London UK
+ 10 BULLET Executed simulated and live trades across equities, futures and options by applying pre-trade risk checks, position limits and written trade plans before every order.
+ 11 BULLET Improved trade review quality by 25% by building an Excel journal that tracks entry rationale, slippage and outcome for every position.
+ 12 BULLET Monitored daily P&L, margin and portfolio exposure, preparing end-of-day summaries that flagged limit breaches and open risks for the desk.
+ 13 BLANK  
+ 14 TEXT   Market Research Intern <TAB> Jun 2021 – Dec 2022
+ 15 TEXT   Kestrel Capital Limited, Manchester UK
+ 16 BULLET Produced weekly sector notes covering macro data, earnings and price action by turning raw market data into short, decision-ready summaries.
+ 17 BULLET Cut report preparation time by 30% by standardising data sources and templates across the research team.
+ 18 BLANK  
+ 19 TEXT   Operations Assistant <TAB> Sep 2019 – May 2021
+ 20 TEXT   Fenwick Foods, Leeds UK
+ 21 BULLET Reduced order errors by 20% by reconciling daily orders against stock records and fixing mismatches before dispatch.
+ 22 BULLET Kept supplier and customer records accurate by maintaining shared Excel trackers used by a team of 6 people.
+ 23 BLANK  
+ 24 TEXT   PROJECTS
+ 25 TEXT   Options Volatility Tracker | Independent Project
+ 26 BULLET Built an Excel model that compares implied and realised volatility for 10 large-cap stocks, updated weekly, to practise reading options pricing.
+ 27 BULLET Wrote a short weekly note on the largest gaps between implied and realised volatility and what they suggested about market expectations.
+ 28 BLANK  
+ 29 TEXT   EDUCATION
+ 30 TEXT   MSc Finance <TAB> September 2021
+ 31 TEXT   University of Northfield, Northfield, UK
+ 32 TEXT   BSc Economics <TAB> June 2020
+ 33 TEXT   Westbrook University, Westbrook, UK
+ 34 BLANK  
+ 35 TEXT   SKILLS
+ 36 TEXT   Technical Skills: Excel, Python (basic), Equity Trading, Options, Futures, Risk Management, Market Analysis
+ 37 TEXT   Soft Skills: Clear written communication, Teamwork, Attention to detail
+ 38 BLANK  
+ 39 TEXT   LANGUAGES
+ 40 TEXT   English

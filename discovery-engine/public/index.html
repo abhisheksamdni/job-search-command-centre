@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f1e3d">
+<title>JCC LOCAL · Job Command Centre</title>
+<link rel="stylesheet" href="/app.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230f1e3d'/><text y='68' x='50' text-anchor='middle' font-size='48' fill='white' font-family='Arial'>JC</text></svg>">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" aria-label="Primary navigation">
+    <div class="brand"><div class="brandmark">JC</div><div><h1>JCC LOCAL</h1><span>Job Command Centre</span></div></div>
+    <nav class="nav" id="nav"></nav>
+    <div class="sidefoot"><span id="side-version">2.0.0-alpha.4</span><span id="side-health">Local · private</span></div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="top-title"><button class="iconbtn mobile-nav" id="nav-toggle" aria-label="Toggle navigation">☰</button><div><h2 id="pagetitle">Dashboard</h2><small id="page-subtitle">What requires your attention today</small></div></div>
+      <div class="top-actions">
+        <label class="global-search" aria-label="Search jobs"><span>⌕</span><input id="global-search" placeholder="Search jobs, companies, keywords"></label>
+        <button class="btn go" id="runbtn">RUN SEARCH NOW</button>
+        <button class="btn danger hidden" id="cancelbtn">CANCEL</button>
+        <span class="mode-pill" id="mode-pill">MANUAL</span>
+        <div class="menu"><button class="btn primary" id="addbtn">+ ADD ▾</button><div class="menu-items" id="addmenu" hidden><button data-add="job">Import job</button><button data-add="source">Add source</button></div></div>
+        <button class="avatar" id="profile-shortcut" title="Candidate profile">AS</button>
+      </div>
+    </header>
+    <div id="runstrip" class="runstrip hidden" aria-live="polite"></div>
+    <main class="content" id="view"><div class="empty"><div class="spinner"></div>Loading JCC…</div></main>
+  </div>
+</div>
+<div id="modalroot"></div>
+<div id="toastroot" aria-live="polite"></div>
+<script src="/app.js?v=20261015-role-filter"></script>
+<script src="/discovery-supervisor.js?v=20261015-role-filter"></script>
+</body>
+</html>

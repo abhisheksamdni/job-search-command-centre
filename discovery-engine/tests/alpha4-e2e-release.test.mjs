@@ -1,0 +1,7 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import {DatabaseSync} from 'node:sqlite';import {migrate} from '../src/migrate.mjs';import {seed} from '../src/seed.mjs';
+function fresh(){const d=new DatabaseSync(':memory:');d.exec('PRAGMA foreign_keys=ON');migrate(d);return d}
+test('migration applies all eight versions',()=>{const d=fresh();assert.equal(d.prepare('select count(*) n from migrations').get().n,8)});
+test('migration remains repeatable',()=>{const d=fresh();migrate(d);assert.equal(d.prepare('select count(*) n from migrations').get().n,8)});
+test('alpha4 target locations enforce normalized identity',()=>{const d=fresh();seed(d);const rows=d.prepare("select normalized_key,count(*) n from target_locations group by normalized_key having n>1").all();assert.equal(rows.length,0)});
+test('alpha4 sqlite integrity passes',()=>{const d=fresh();assert.equal(d.prepare('pragma integrity_check').get().integrity_check,'ok')});
+test('alpha4 discovery telemetry targets the migration 003 attempts table',()=>{const service=fs.readFileSync(new URL('../src/discovery/service.mjs',import.meta.url),'utf8');const migration=fs.readFileSync(new URL('../migrations/003_alpha4_global_discovery.sql',import.meta.url),'utf8');assert.match(service,/INSERT INTO discovery_attempts\(/);assert.doesNotMatch(service,/INSERT INTO source_attempts\(/);assert.match(migration,/CREATE TABLE IF NOT EXISTS discovery_attempts\s*\(/);});
