@@ -86,3 +86,7 @@ discovery-engine/            job discovery, screening skills, knowledge graph, t
 cd discovery-engine
 npm test
 ```
+
+## Licence
+
+MIT. See [LICENSE](LICENSE).
